@@ -1,0 +1,2349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El Mancebón de los Palacios — Aplicación de Ensayo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap');
+
+  :root {
+    --ink: #1a1008;
+    --parch: #f5edd6;
+    --parch2: #ede0bc;
+    --parch3: #e3d09f;
+    --gold: #b8860b;
+    --gold2: #d4a017;
+    --red: #8b1a1a;
+    --red2: #c0392b;
+    --shadow: rgba(26,16,8,0.18);
+    --highlight: #fff9e6;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--ink);
+    font-family: 'Crimson Pro', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+
+  /* ── PORTADA ── */
+  #portada {
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 30% 40%, #2a1a08 0%, #0f0804 70%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 2rem;
+    position: relative; overflow: hidden;
+  }
+  #portada::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23b8860b' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 1;
+  }
+  .portada-ornament {
+    font-size: 3rem; color: var(--gold); opacity: 0.6;
+    letter-spacing: 0.5rem; margin-bottom: 1.5rem;
+    animation: flicker 4s ease-in-out infinite;
+  }
+  @keyframes flicker {
+    0%,100%{opacity:0.6} 50%{opacity:0.9}
+  }
+  .portada-subtitle {
+    font-family: 'Crimson Pro', serif; font-style: italic;
+    color: var(--gold2); font-size: 1.1rem; letter-spacing: 0.15rem;
+    margin-bottom: 0.5rem; text-transform: uppercase;
+  }
+  .portada-title {
+    font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic;
+    font-size: clamp(2rem, 6vw, 4rem);
+    color: var(--parch); line-height: 1.1;
+    text-shadow: 0 2px 20px rgba(184,134,11,0.4);
+    margin-bottom: 0.5rem;
+  }
+  .portada-or {
+    color: var(--gold); font-size: 1.2rem; font-style: italic;
+    margin: 0.3rem 0;
+  }
+  .portada-title2 {
+    font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    color: var(--parch2); line-height: 1.2; margin-bottom: 0.3rem;
+  }
+  .portada-author {
+    color: var(--gold2); font-size: 1rem; letter-spacing: 0.2rem;
+    margin-bottom: 2.5rem; font-style: italic;
+  }
+  .portada-divider {
+    width: 200px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.5rem auto;
+  }
+  .portada-btn {
+    background: linear-gradient(135deg, var(--gold), var(--gold2));
+    color: var(--ink); border: none; cursor: pointer;
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    font-size: 1.1rem; letter-spacing: 0.1rem;
+    padding: 1rem 2.5rem; border-radius: 2px;
+    box-shadow: 0 4px 20px rgba(184,134,11,0.4);
+    transition: all 0.3s ease; text-transform: uppercase;
+  }
+  .portada-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(184,134,11,0.6);
+  }
+  .portada-info {
+    color: var(--parch3); font-size: 0.85rem; margin-top: 1.5rem; opacity: 0.7;
+    font-style: italic;
+  }
+/* Estilo para el adaptador (elegante bajo el autor) */
+  .portada-adapter {
+    font-family: 'Crimson Pro', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--parch2); /* ¡Corregido! Ahora es color pergamino claro */
+    margin-top: 0.5rem;
+    opacity: 0.8;
+  }
+
+  /* Estilo para los créditos de la app (muy discreto abajo del todo) */
+  .portada-credits {
+    font-family: 'Crimson Pro', serif;
+    font-size: 0.75rem;
+    color: var(--parch3); /* ¡Corregido! Ahora es color pergamino oscurecido */
+    opacity: 0.5;
+    margin-top: 3rem;
+    letter-spacing: 0.05rem;
+    text-transform: uppercase;
+  }
+
+
+  /* ── APP PRINCIPAL ── */
+  #app { display: none; min-height: 100vh; background: var(--parch); }
+
+  /* Header */
+  .app-header {
+    background: var(--ink);
+    padding: 0.8rem 1.5rem;
+    display: flex; align-items: center; gap: 1rem;
+    border-bottom: 3px solid var(--gold);
+    position: sticky; top: 0; z-index: 100;
+  }
+  .header-title {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    color: var(--parch); font-size: 1.1rem; font-weight: 700;
+    flex: 1;
+  }
+  .header-title span { color: var(--gold); }
+  .btn-back {
+    background: none; border: 1px solid var(--gold);
+    color: var(--gold); cursor: pointer; font-size: 1rem;
+    padding: 0.3rem 0.8rem; border-radius: 2px;
+    transition: all 0.2s;
+  }
+  .btn-back:hover { background: var(--gold); color: var(--ink); }
+
+  /* Nav tabs */
+  .nav-tabs {
+    display: flex; background: #2a1a08; border-bottom: 2px solid var(--gold);
+    overflow-x: auto; gap: 0;
+  }
+  .nav-tab {
+    background: none; border: none; cursor: pointer;
+    color: var(--parch3); padding: 0.75rem 1.2rem;
+    font-family: 'Crimson Pro', serif; font-size: 0.95rem;
+    border-right: 1px solid rgba(184,134,11,0.2);
+    white-space: nowrap; transition: all 0.2s;
+    position: relative;
+  }
+  .nav-tab:hover { color: var(--gold); background: rgba(184,134,11,0.1); }
+  .nav-tab.active {
+    color: var(--gold); background: rgba(184,134,11,0.15);
+  }
+  .nav-tab.active::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px; background: var(--gold);
+  }
+
+  /* Content area */
+  .content { padding: 1.5rem; max-width: 900px; margin: 0 auto; }
+
+  /* Panel cards */
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* ── PANEL: OBRA ── */
+  .jornada-nav {
+    display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;
+  }
+  .jornada-btn {
+    background: var(--ink); color: var(--parch); border: none;
+    padding: 0.5rem 1.2rem; cursor: pointer; font-family: 'Playfair Display', serif;
+    font-size: 0.9rem; border-radius: 2px; transition: all 0.2s;
+    border: 1px solid transparent;
+  }
+  .jornada-btn.active, .jornada-btn:hover {
+    background: var(--gold); color: var(--ink);
+  }
+
+  .script-container {
+    background: var(--highlight);
+    border: 1px solid var(--parch3);
+    border-radius: 4px; padding: 1.5rem 2rem;
+    box-shadow: 0 2px 12px var(--shadow);
+    font-size: 1rem; line-height: 1.8;
+    max-height: 65vh; overflow-y: auto;
+  }
+  .script-container::-webkit-scrollbar { width: 8px; }
+  .script-container::-webkit-scrollbar-track { background: var(--parch2); }
+  .script-container::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 4px; }
+
+  .stage-dir {
+    color: #666; font-style: italic; font-size: 0.9rem;
+    margin: 0.8rem 0; padding: 0.5rem 1rem;
+    border-left: 3px solid var(--parch3);
+  }
+  .speech { margin: 0.5rem 0; }
+  .speaker-name {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    color: var(--red); font-size: 0.9rem; letter-spacing: 0.05rem;
+    text-transform: uppercase;
+  }
+  .speech-text { padding-left: 1rem; color: var(--ink); }
+
+  .speech.highlighted .speech-text {
+    background: #fff3c4; border-left: 3px solid var(--gold);
+    padding: 0.4rem 0.8rem; border-radius: 2px;
+  }
+  .speech.other-char .speech-text { opacity: 0.5; }
+
+  /* ── PANEL: PERSONAJES ── */
+  .personajes-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .personaje-card {
+    background: var(--ink); color: var(--parch);
+    border: 2px solid transparent; border-radius: 4px;
+    padding: 1rem; cursor: pointer; transition: all 0.25s;
+    text-align: center;
+  }
+  .personaje-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .personaje-card.selected { border-color: var(--gold); background: #2a1a08; }
+  .personaje-card .char-icon {
+    font-size: 2rem; margin-bottom: 0.5rem; display: block;
+  }
+  .personaje-card .char-name {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1rem; font-weight: 700; color: var(--parch);
+  }
+  .personaje-card .char-actor {
+    font-size: 0.78rem; color: var(--gold2); margin-top: 0.3rem;
+  }
+  .personaje-card .char-lines {
+    font-size: 0.75rem; color: var(--parch3); margin-top: 0.3rem;
+  }
+
+  .char-stats {
+    background: var(--ink); color: var(--parch);
+    border-radius: 4px; padding: 1.2rem; margin-top: 1rem;
+    border: 1px solid var(--gold);
+  }
+  .char-stats h3 {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    color: var(--gold); font-size: 1.3rem; margin-bottom: 0.8rem;
+  }
+  .stat-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+  .stat-pill {
+    background: rgba(184,134,11,0.15); border: 1px solid var(--gold);
+    color: var(--parch); padding: 0.3rem 0.8rem; border-radius: 20px;
+    font-size: 0.8rem;
+  }
+
+  /* ── PANEL: ESTUDIO ── */
+  .study-controls {
+    background: var(--ink); padding: 1rem 1.5rem;
+    border-radius: 4px; margin-bottom: 1rem;
+    display: flex; flex-wrap: wrap; gap: 1rem; align-items: center;
+  }
+  .study-controls label { color: var(--parch2); font-size: 0.9rem; }
+  .study-controls select {
+    background: #2a1a08; color: var(--parch); border: 1px solid var(--gold);
+    padding: 0.4rem 0.8rem; border-radius: 2px; font-family: 'Crimson Pro', serif;
+    font-size: 0.95rem; cursor: pointer;
+  }
+  .toggle-group { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .toggle-btn {
+    background: none; border: 1px solid var(--gold);
+    color: var(--gold); padding: 0.3rem 0.8rem; cursor: pointer;
+    border-radius: 20px; font-size: 0.8rem; transition: all 0.2s;
+  }
+  .toggle-btn.active { background: var(--gold); color: var(--ink); }
+
+  .study-script { }
+  .study-line {
+    display: flex; gap: 0.8rem; align-items: flex-start;
+    margin: 0.4rem 0; padding: 0.5rem;
+    border-radius: 3px; transition: background 0.2s;
+  }
+  .study-line.my-line {
+    background: #fff8e1; border-left: 4px solid var(--gold);
+  }
+  .study-line.other-line { opacity: 0.7; }
+  .study-line .line-speaker {
+    font-family: 'Playfair Display', serif; font-weight: 700;
+    color: var(--red); min-width: 120px; font-size: 0.85rem;
+    text-transform: uppercase;
+  }
+  .study-line .line-text { flex: 1; line-height: 1.7; }
+  .study-line.my-line .line-text { font-weight: 600; }
+
+  /* ── PANEL: PROMPTER ── */
+  .prompter-container {
+    background: #0a0600; border-radius: 8px; padding: 2rem;
+    min-height: 400px; font-size: 1.2rem; line-height: 2;
+    position: relative; overflow: hidden;
+  }
+  .prompter-line {
+    margin: 0.4rem 0; transition: all 0.4s ease;
+  }
+  .prompter-line .p-speaker {
+    color: #b8860b; font-weight: 700; font-size: 0.9rem;
+    text-transform: uppercase; letter-spacing: 0.05rem;
+    font-family: 'Playfair Display', serif;
+  }
+  .prompter-line .p-text { color: #e8d5a0; }
+  .prompter-line.p-mine .p-text { color: #fff; font-weight: 600; }
+  .prompter-line.p-mine.hidden-text .p-text {
+    filter: blur(4px); cursor: pointer; user-select: none;
+    background: rgba(184,134,11,0.1); border-radius: 3px;
+    padding: 0 0.3rem;
+  }
+  .prompter-line.p-mine.hidden-text .p-text:hover { filter: blur(0); }
+  .prompter-line.p-stagedir .p-text { color: #666; font-style: italic; font-size: 0.85rem; }
+  .prompter-line.p-current {
+    background: rgba(184,134,11,0.15); border-left: 4px solid #b8860b;
+    padding-left: 0.8rem; border-radius: 2px;
+  }
+
+  .prompter-controls {
+    display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap; align-items: center;
+  }
+  .prom-btn {
+    background: var(--ink); color: var(--parch); border: 1px solid var(--gold);
+    padding: 0.5rem 1rem; cursor: pointer; border-radius: 2px;
+    font-family: 'Crimson Pro', serif; font-size: 0.95rem; transition: all 0.2s;
+  }
+  .prom-btn:hover, .prom-btn.active { background: var(--gold); color: var(--ink); }
+  .prom-btn.danger { border-color: var(--red); color: var(--red); }
+  .prom-btn.danger:hover { background: var(--red); color: white; }
+
+  /* ── PANEL: BÚSQUEDA ── */
+  .search-box {
+    display: flex; gap: 0.5rem; margin-bottom: 1rem;
+  }
+  .search-input {
+    flex: 1; background: var(--parch2); border: 2px solid var(--parch3);
+    padding: 0.7rem 1rem; font-family: 'Crimson Pro', serif; font-size: 1rem;
+    border-radius: 2px; color: var(--ink);
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { outline: none; border-color: var(--gold); }
+  .search-btn {
+    background: var(--ink); color: var(--parch); border: none;
+    padding: 0.7rem 1.5rem; cursor: pointer; border-radius: 2px;
+    font-family: 'Playfair Display', serif; font-size: 0.95rem; transition: all 0.2s;
+  }
+  .search-btn:hover { background: var(--gold); color: var(--ink); }
+  .search-result {
+    background: var(--parch2); border-radius: 4px; padding: 0.8rem 1rem;
+    margin-bottom: 0.6rem; border-left: 4px solid var(--gold);
+    cursor: pointer; transition: background 0.2s;
+  }
+  .search-result:hover { background: var(--parch3); }
+  .search-result .res-loc {
+    font-size: 0.78rem; color: var(--red); font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05rem; margin-bottom: 0.3rem;
+  }
+  .search-result .res-speaker { font-weight: 700; color: var(--red); font-size: 0.9rem; }
+  .search-result .res-text { font-size: 0.95rem; }
+  .search-result .res-text mark {
+    background: #fff3c4; padding: 0 2px; border-radius: 2px;
+  }
+
+  /* ── PANEL: RESUMEN ── */
+  .summary-section {
+    background: var(--ink); color: var(--parch);
+    border-radius: 4px; padding: 1.5rem; margin-bottom: 1rem;
+    border: 1px solid var(--gold);
+  }
+  .summary-section h3 {
+    font-family: 'Playfair Display', serif; color: var(--gold);
+    font-size: 1.2rem; margin-bottom: 0.8rem; font-style: italic;
+  }
+  .char-line-bar {
+    display: flex; align-items: center; gap: 0.8rem; margin: 0.4rem 0;
+  }
+  .char-line-bar .bar-name {
+    min-width: 130px; font-size: 0.85rem; color: var(--parch2);
+  }
+  .char-line-bar .bar-track {
+    flex: 1; height: 14px; background: rgba(255,255,255,0.08);
+    border-radius: 7px; overflow: hidden;
+  }
+  .char-line-bar .bar-fill {
+    height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold2));
+    border-radius: 7px; transition: width 1s ease;
+  }
+  .char-line-bar .bar-count {
+    font-size: 0.8rem; color: var(--parch3); min-width: 30px;
+  }
+
+  /* ── PANEL: REPASO ── */
+  .quiz-card {
+    background: var(--ink); color: var(--parch);
+    border-radius: 6px; padding: 2rem; text-align: center;
+    border: 2px solid var(--gold); min-height: 250px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .quiz-prompt {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    font-size: 1.1rem; color: var(--parch2); margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+  .quiz-cue {
+    font-size: 0.85rem; color: var(--gold2); margin-bottom: 1rem;
+    font-style: italic;
+  }
+  .quiz-reveal-btn {
+    background: var(--gold); color: var(--ink); border: none;
+    padding: 0.8rem 2rem; cursor: pointer; border-radius: 2px;
+    font-family: 'Playfair Display', serif; font-size: 1rem;
+    font-weight: 700; transition: all 0.2s; margin-top: 1rem;
+  }
+  .quiz-reveal-btn:hover { background: var(--gold2); }
+  .quiz-answer {
+    background: rgba(184,134,11,0.1); border: 1px solid var(--gold);
+    border-radius: 4px; padding: 1rem; margin-top: 1rem; font-size: 1rem;
+    line-height: 1.7; display: none; color: var(--parch);
+  }
+  .quiz-nav { display: flex; gap: 1rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+  .quiz-progress {
+    text-align: center; color: var(--parch3); font-size: 0.85rem;
+    margin-bottom: 1rem; font-style: italic;
+  }
+  .quiz-controls {
+    display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 1rem; align-items: center;
+  }
+
+  /* ── PANEL: GRABACIÓN ── */
+  .grab-layout { display: flex; flex-direction: column; gap: 1rem; }
+  .grab-controls-card {
+    background: var(--ink); border-radius: 4px; padding: 1rem 1.5rem;
+    border: 1px solid var(--gold);
+  }
+  .grab-ctrl-row { display: flex; flex-wrap: wrap; gap: 1.2rem; align-items: flex-end; }
+  .grab-label { display: block; color: var(--parch3); font-size: 0.82rem; margin-bottom: 0.3rem; }
+  .grab-controls-card select {
+    background: #2a1a08; color: var(--parch); border: 1px solid var(--gold);
+    padding: 0.4rem 0.8rem; border-radius: 2px; font-family: 'Crimson Pro', serif; font-size: 0.95rem;
+  }
+  .grab-scene-box {
+    background: var(--highlight); border: 1px solid var(--parch3); border-radius: 4px;
+    padding: 1.2rem 1.5rem; min-height: 200px; max-height: 350px; overflow-y: auto;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .grab-scene-box::-webkit-scrollbar { width: 6px; }
+  .grab-scene-box::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 3px; }
+  .grab-recorder-card {
+    background: #0d0906; border: 2px solid var(--gold); border-radius: 6px;
+    padding: 1.2rem; text-align: center;
+  }
+  .grab-rec-title { color: var(--gold2); font-family: 'Playfair Display',serif; font-style:italic; font-size: 1.05rem; margin-bottom: 0.8rem; }
+  .grab-vu-wrap { margin-bottom: 0.8rem; display:flex; justify-content:center; }
+  .grab-btn-row { display: flex; gap: 0.8rem; justify-content: center; margin-bottom: 0.5rem; }
+  .grab-rec-btn {
+    background: #1a0e06; color: var(--parch); border: 2px solid var(--gold);
+    padding: 0.7rem 1.5rem; cursor: pointer; border-radius: 4px;
+    font-family: 'Playfair Display', serif; font-size: 0.95rem; transition: all 0.2s;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .grab-rec-btn:hover:not(:disabled) { background: var(--gold); color: var(--ink); }
+  .grab-rec-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .grab-rec-btn.recording { background: var(--red); border-color: var(--red); color: white; animation: pulse 1.2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.7} }
+  .rec-dot { width: 10px; height: 10px; background: var(--red); border-radius: 50%; display:inline-block; }
+  .grab-rec-btn.recording .rec-dot { background: white; animation: blink 0.8s step-end infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .grab-rec-time { color: var(--gold); font-size: 1.4rem; font-family: monospace; margin: 0.3rem 0; }
+  .grab-status { color: var(--parch3); font-size: 0.82rem; font-style: italic; }
+  .grab-library-card {
+    background: var(--ink); border-radius: 4px; padding: 1.2rem;
+    border: 1px solid var(--gold);
+  }
+  .grab-item {
+    background: #1a0e06; border: 1px solid rgba(184,134,11,0.3); border-radius: 4px;
+    padding: 0.8rem 1rem; margin-bottom: 0.6rem;
+    display: flex; flex-wrap:wrap; gap: 0.6rem; align-items: center;
+  }
+  .grab-item-info { flex: 1; min-width: 150px; }
+  .grab-item-title { color: var(--gold2); font-weight: 700; font-size: 0.85rem; font-family:'Playfair Display',serif; }
+  .grab-item-meta { color: var(--parch3); font-size: 0.75rem; margin-top: 0.2rem; }
+  .grab-item audio { flex: 1; min-width: 200px; height: 32px; }
+  .grab-item audio::-webkit-media-controls-panel { background: #1a0e06; }
+  .grab-del-btn {
+    background: none; border: 1px solid var(--red); color: var(--red);
+    padding: 0.25rem 0.6rem; cursor: pointer; border-radius: 3px; font-size: 0.75rem;
+    transition: all 0.2s;
+  }
+  .grab-del-btn:hover { background: var(--red); color: white; }
+
+  /* Misc */
+  .section-title {
+    font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic;
+    font-size: 1.4rem; color: var(--ink); margin-bottom: 1rem;
+    border-bottom: 2px solid var(--gold); padding-bottom: 0.4rem;
+  }
+  .badge {
+    display: inline-block; background: var(--gold); color: var(--ink);
+    padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.7rem;
+    font-weight: 700; letter-spacing: 0.05rem; text-transform: uppercase;
+  }
+  .empty-state {
+    text-align: center; padding: 3rem; color: #888; font-style: italic;
+  }
+  .ornament { color: var(--gold); font-size: 1.5rem; }
+</style>
+</head>
+<body>
+
+<!-- PORTADA -->
+<div id="portada">
+  <div class="portada-ornament">⚜ ⚜ ⚜</div>
+  <div class="portada-subtitle">Comedia Famosa</div>
+  <div class="portada-title">El Mancebón de los Palacios</div>
+  <div class="portada-or">o</div>
+  <div class="portada-title2">Agraviar para Alcanzar</div>
+  <div class="portada-author">Don Juan Vélez de Guevara</div>
+  <div class="portada-adapter">Obra adaptada por Don Antonio Cabello</div>
+  <div class="portada-divider"></div>
+  <button style="position: relative; z-index: 9999; background: #b8860b; color: white; padding: 15px 30px; font-size: 20px; cursor: pointer; border: none; border-radius: 5px;" onclick="document.getElementById('portada').style.display='none'; document.getElementById('app').style.display='block'; if(typeof initApp === 'function') initApp(); else alert('Falta initApp');">📜 ENTRAR A LA OBRA</button>
+  <p class="portada-info">Obra completa · 3 Jornadas · 17 personajes · Modos de estudio y ensayo</p>
+  <div class="portada-credits">Aplicación realizada por Don Pedro Antonio Vega Polo</div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="app-header">
+    <button class="btn-back" onclick="backToPortada()">← Portada</button>
+    <div class="header-title"><span>El Mancebón</span> — Aplicación de Ensayo</div>
+  </div>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPanel('obra')">📜 La Obra</button>
+    <button class="nav-tab" onclick="showPanel('personajes')">🎭 Personajes</button>
+    <button class="nav-tab" onclick="showPanel('estudio')">📖 Mi Texto</button>
+    <button class="nav-tab" onclick="showPanel('prompter')">🎬 Prompter</button>
+    <button class="nav-tab" onclick="showPanel('repaso')">🎯 Repaso</button>
+    <button class="nav-tab" onclick="showPanel('grabacion')">🎙️ Grabación</button>
+    <button class="nav-tab" onclick="showPanel('buscar')">🔍 Buscar</button>
+    <button class="nav-tab" onclick="showPanel('resumen')">📊 Estadísticas</button>
+  </div>
+
+  <div class="content">
+
+    <!-- PANEL: OBRA -->
+    <div class="panel active" id="panel-obra">
+      <div class="section-title ornament">La Obra Completa</div>
+      <div class="jornada-nav" id="jornada-nav"></div>
+      <div style="display:flex; gap:0.8rem; margin-bottom:1rem; flex-wrap:wrap; align-items:center;">
+        <label style="font-size:0.9rem; color:#555;">Destacar personaje:</label>
+        <select id="highlight-char" onchange="renderScript()" style="background:white; border:1px solid #ccc; padding:0.3rem 0.8rem; border-radius:2px; font-family:'Crimson Pro',serif; font-size:0.9rem;">
+          <option value="">— Ninguno —</option>
+        </select>
+        <label style="display:flex;align-items:center;gap:0.4rem;font-size:0.9rem;color:#555;cursor:pointer;">
+          <input type="checkbox" id="dim-others" onchange="renderScript()"> Atenuar otros
+        </label>
+      </div>
+      <div class="script-container" id="script-display"></div>
+    </div>
+
+    <!-- PANEL: PERSONAJES -->
+    <div class="panel" id="panel-personajes">
+      <div class="section-title ornament">Reparto</div>
+      <div class="personajes-grid" id="personajes-grid"></div>
+      <div id="char-detail"></div>
+    </div>
+
+    <!-- PANEL: ESTUDIO -->
+    <div class="panel" id="panel-estudio">
+      <div class="section-title ornament">Mi Texto</div>
+      <div class="study-controls">
+        <div>
+          <label>Mi personaje: </label>
+          <select id="study-char" onchange="renderStudy()">
+            <option value="">— Elige tu personaje —</option>
+          </select>
+        </div>
+        <div>
+          <label>Jornada: </label>
+          <select id="study-jornada" onchange="renderStudy()">
+            <option value="all">Todas</option>
+            <option value="0">Jornada 1ª</option>
+            <option value="1">Jornada 2ª</option>
+            <option value="2">Jornada 3ª</option>
+          </select>
+        </div>
+        <div class="toggle-group">
+          <button class="toggle-btn active" id="tb-context" onclick="toggleStudy('context')">Con contexto</button>
+          <button class="toggle-btn" id="tb-solo" onclick="toggleStudy('solo')">Solo mis líneas</button>
+        </div>
+      </div>
+      <div id="study-display" class="script-container"></div>
+    </div>
+
+    <!-- PANEL: PROMPTER -->
+    <div class="panel" id="panel-prompter">
+      <div class="section-title ornament">Modo Prompter</div>
+      <div class="prompter-controls">
+        <div>
+          <label style="font-size:0.9rem;color:#555;">Personaje: </label>
+          <select id="prom-char" style="background:white; border:1px solid #ccc; padding:0.3rem 0.8rem; border-radius:2px; font-family:'Crimson Pro',serif; font-size:0.9rem;">
+            <option value="">— Elige —</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.9rem;color:#555;">Jornada: </label>
+          <select id="prom-jornada" style="background:white; border:1px solid #ccc; padding:0.3rem 0.8rem; border-radius:2px; font-family:'Crimson Pro',serif; font-size:0.9rem;">
+            <option value="all">Todas</option>
+            <option value="0">Jornada 1ª</option>
+            <option value="1">Jornada 2ª</option>
+            <option value="2">Jornada 3ª</option>
+          </select>
+        </div>
+        <button class="prom-btn active" id="btn-hide-mine" onclick="toggleHide()">🙈 Ocultar mis líneas</button>
+        <button class="prom-btn" onclick="renderPrompter()">▶ Iniciar</button>
+      </div>
+      <p style="font-size:0.85rem;color:#888;margin-bottom:1rem;font-style:italic;">
+        Tus líneas aparecen en blanco/dorado. Si "Ocultar mis líneas" está activo, aparecen borrosas — pulsa sobre ellas para revelarlas.
+      </p>
+      <div class="prompter-container" id="prompter-display">
+        <p style="color:#666;font-style:italic;text-align:center;padding-top:3rem;">
+          Elige personaje y pulsa Iniciar
+        </p>
+      </div>
+    </div>
+
+    <!-- PANEL: REPASO -->
+    <div class="panel" id="panel-repaso">
+      <div class="section-title ornament">Modo Repaso (Flash Cards)</div>
+      <div class="quiz-controls">
+        <div>
+          <label style="font-size:0.9rem;color:#555;">Personaje: </label>
+          <select id="quiz-char" onchange="loadQuiz()">
+            <option value="">— Elige personaje —</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:0.9rem;color:#555;">Jornada: </label>
+          <select id="quiz-jornada" onchange="loadQuiz()">
+            <option value="all">Todas</option>
+            <option value="0">Jornada 1ª</option>
+            <option value="1">Jornada 2ª</option>
+            <option value="2">Jornada 3ª</option>
+          </select>
+        </div>
+        <button class="prom-btn" onclick="shuffleQuiz()">🔀 Barajar</button>
+      </div>
+      <div class="quiz-progress" id="quiz-progress"></div>
+      <div class="quiz-card" id="quiz-card">
+        <p style="color:#666;font-style:italic;">Elige un personaje para empezar el repaso</p>
+      </div>
+    </div>
+
+    <!-- PANEL: BUSCAR -->
+    <div class="panel" id="panel-buscar">
+      <div class="section-title ornament">Buscar en el Texto</div>
+      <div class="search-box">
+        <input class="search-input" id="search-input" placeholder="Escribe una palabra o frase…"
+          oninput="doSearch()" onkeydown="if(event.key==='Enter')doSearch()">
+        <button class="search-btn" onclick="doSearch()">Buscar</button>
+      </div>
+      <div id="search-results"></div>
+    </div>
+
+    <!-- PANEL: RESUMEN -->
+    <div class="panel" id="panel-resumen">
+      <div class="section-title ornament">Estadísticas de la Obra</div>
+      <div id="stats-display"></div>
+    </div>
+
+    <!-- PANEL: GRABACIÓN -->
+    <div class="panel" id="panel-grabacion">
+      <div class="section-title ornament">🎙️ Estudio de Grabación</div>
+
+      <div class="grab-layout">
+        <!-- Selector de escena -->
+        <div class="grab-controls-card">
+          <div class="grab-ctrl-row">
+            <div>
+              <label class="grab-label">Mi personaje:</label>
+              <select id="grab-char" onchange="loadGrabScene()">
+                <option value="">— Elige personaje —</option>
+              </select>
+            </div>
+            <div>
+              <label class="grab-label">Jornada:</label>
+              <select id="grab-jornada" onchange="loadGrabScene()">
+                <option value="all">Todas</option>
+                <option value="0">Jornada 1ª</option>
+                <option value="1">Jornada 2ª</option>
+                <option value="2">Jornada 3ª</option>
+              </select>
+            </div>
+            <div>
+              <label class="grab-label">Escena nº:</label>
+              <div style="display:flex;gap:0.4rem;align-items:center;">
+                <button class="prom-btn" onclick="prevGrabScene()" style="padding:0.3rem 0.6rem;">◀</button>
+                <span id="grab-scene-num" style="color:var(--gold);font-weight:700;min-width:60px;text-align:center;">—</span>
+                <button class="prom-btn" onclick="nextGrabScene()" style="padding:0.3rem 0.6rem;">▶</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Texto de la escena actual -->
+        <div id="grab-scene-text" class="grab-scene-box">
+          <p style="color:#888;font-style:italic;text-align:center;padding:2rem;">
+            Elige tu personaje para ver las escenas
+          </p>
+        </div>
+
+        <!-- Controles de grabación -->
+        <div class="grab-recorder-card" id="grab-recorder-card">
+          <div class="grab-rec-title">🎙️ Grabadora</div>
+          <div class="grab-vu-wrap">
+            <canvas id="grab-vu" width="300" height="50"></canvas>
+          </div>
+          <div class="grab-btn-row">
+            <button class="grab-rec-btn" id="btn-rec-start" onclick="startRecording()">
+              <span class="rec-dot"></span> Grabar
+            </button>
+            <button class="grab-rec-btn" id="btn-rec-stop" onclick="stopRecording()" disabled>
+              ⏹ Detener
+            </button>
+          </div>
+          <div class="grab-rec-time" id="grab-rec-time">00:00</div>
+          <div class="grab-status" id="grab-status">Listo para grabar</div>
+        </div>
+
+        <!-- Biblioteca de grabaciones -->
+        <div class="grab-library-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.8rem;">
+            <div class="grab-rec-title">📚 Mis Grabaciones</div>
+            <button class="prom-btn danger" onclick="clearAllRecordings()" style="font-size:0.78rem;padding:0.3rem 0.6rem;">🗑 Borrar todas</button>
+          </div>
+          <div id="grab-library"></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════════════
+//  DATOS DE LA OBRA
+// ══════════════════════════════════════════════
+
+const PLAY = {
+  title: "El Mancebón de los Palacios",
+  author: "Don Juan Vélez de Guevara",
+  jornadas: ["Jornada Primera", "Jornada Segunda", "Jornada Tercera"]
+};
+
+// Personajes: id, nombre_obra, actor, icono
+const PERSONAJES = [
+  { id:"MANCEBÓN", nombre:"El Mancebón (Juan Cris)", corto:"Mancebón", actor:"Juan Cris", icon:"⚔️" },
+  { id:"REY",      nombre:"El Rey D. Enrique",       corto:"Rey",       actor:"Pedro",   icon:"👑" },
+  { id:"JUANA",    nombre:"Dª Juana de Mendoza",     corto:"Juana",     actor:"Cuca",    icon:"🌹" },
+  { id:"MANRIQUE", nombre:"D. Manrique de Lara",     corto:"Manrique",  actor:"Juanlu",  icon:"🗡️" },
+  { id:"ISABEL",   nombre:"Dª Isabel de Castro",     corto:"Isabel",    actor:"Concha",  icon:"🌸" },
+  { id:"RODRIGO",  nombre:"D. Rodrigo",              corto:"Rodrigo",   actor:"Plácido", icon:"🏰" },
+  { id:"RUFINA",   nombre:"Rufina (graciosa)",       corto:"Rufina",    actor:"Ana",     icon:"😄" },
+  { id:"RACIMO",   nombre:"Racimo (gracioso)",       corto:"Racimo",    actor:"Víctor F.",icon:"🍇" },
+  { id:"PEDRO",    nombre:"D. Pedro",                corto:"Pedro",     actor:"Víctor E.",icon:"⚜️" },
+  { id:"PERO",     nombre:"Pero Alonso",             corto:"Pero Alonso",actor:"Juan Cota",icon:"👨‍🌾" },
+  { id:"BELTRÁN",  nombre:"Beltrán",                 corto:"Beltrán",   actor:"Joaquín", icon:"🧳" },
+  { id:"ENRIQUETA",nombre:"Enriqueta",               corto:"Enriqueta", actor:"Charo",   icon:"👩" },
+  { id:"MELISA",   nombre:"Melisa",                  corto:"Melisa",    actor:"Lucía",   icon:"👩" },
+  { id:"MENGA",    nombre:"Menga",                   corto:"Menga",     actor:"Isabel",  icon:"👩" },
+  { id:"QUIRCIA",  nombre:"Quircia / Poncia",        corto:"Quircia",   actor:"Vicky",   icon:"👩" },
+  { id:"VOCES",    nombre:"Voces / Criados",         corto:"Voces",     actor:"—",       icon:"📣" },
+];
+
+const charMap = {};
+PERSONAJES.forEach(p => { charMap[p.id] = p; });
+
+// Tipo: "speech" | "dir"
+// Para speech: { type, jornada, speaker, text }
+// Para dir: { type, jornada, text }
+const SCRIPT = [];
+
+function s(j, sp, txt) { SCRIPT.push({type:"speech", jornada:j, speaker:sp, text:txt}); }
+function d(j, txt)      { SCRIPT.push({type:"dir",    jornada:j, text:txt}); }
+
+// ══════════ JORNADA 1ª ══════════
+d(0,"Dicen dentro varias voces:");
+s(0,"VOCES","¡Para, para! — ¡Aguarda! — ¡Espera!");
+s(0,"JUANA","¡No hay quien en peligro me ampare!");
+s(0,"MANCEBÓN","Fuerza habrá que lo repare");
+d(0,"Sale un grupo de personas que corren nerviosas por la escena.");
+s(0,"RACIMO","Ni el diablo tal hiciera. ¡Por Dios que se arrojó!");
+s(0,"ENRIQUETA","Al ver que el coche se despeñaba…");
+s(0,"MELISA","…y como una furia brava, la caída le impidió");
+s(0,"RACIMO","El riesgo viene a ser amarillo, carne tiene de membrillo");
+s(0,"MENGA","¡Hombre que tanto detiene…");
+s(0,"ENRIQUETA","…no pudiera hacer Sansón!");
+s(0,"MELISA","¡Con su fuerza sobrehumana…");
+s(0,"RACIMO","…ni Hércules en diez semanas…");
+s(0,"MENGA","…lo que ha hecho el Mancebón!");
+s(0,"MELISA","Que cuando corre hacia atrás un coche en una cuesta…");
+s(0,"MENGA","…es imposible la gesta…");
+s(0,"ENRIQUETA","…de detenerlo jamás.");
+s(0,"MELISA","¡Ya viene por el postigo!");
+s(0,"MENGA","¡Con una dama en su cuerpo!");
+s(0,"ENRIQUETA","¡Con el corazón muy muerto!");
+s(0,"MELISA","¡Y el rostro muy vivo!");
+d(0,"Sale el Mancebón vestido de labrador, con Juana en sus brazos, ella se hace la muerta.");
+s(0,"MANCEBÓN","De aquel peligro señora, ya estáis libre");
+s(0,"JUANA","¡Ay de mí!");
+d(0,"Se desmaya de nuevo.");
+s(0,"RACIMO","Parece que no vuelve en sí");
+s(0,"MANCEBÓN","Tendrá el prado nueva aurora, el cielo nuevo esplendor, como yo nuevos antojos, pues desque vi sus ojos, conozco que es fuego Amor");
+s(0,"RACIMO","¿Tú, amor? ¡Buena novedad en tu condición sería!");
+d(0,"La sienta en una peña del campo.");
+s(0,"JUANA","¡Qué suceso tan extraño!");
+s(0,"MANCEBÓN","Más extraño ha sido el mío, pues ha hecho mayor daño");
+s(0,"JUANA","¡Jesús! ¿Dónde estoy?");
+s(0,"MANCEBÓN","En el cielo, Señora");
+s(0,"JUANA","¿Por qué?");
+s(0,"MANCEBÓN","Porque me dejó sin alma vuestra hermosura; pues en la dicha de veros, siendo forzoso el amaros, se hace peligro el hallaros con el miedo de perderos");
+s(0,"JUANA","¿Quién sois? Que conocer debo a quien la vida me ha dado");
+s(0,"MANCEBÓN","Tan otro me habéis dejado que hasta me ignoro por nuevo");
+s(0,"MELISA","¡Ay, mi alma! Sabed que es mozo bizarro, y conocerle os conviene…");
+s(0,"MENGA","Quien a todo un coche detiene... ¡que me coja a mí con su… digo!");
+s(0,"JUANA","¿Sois de este lugar vecino?");
+s(0,"MANCEBÓN","En él ha estado hasta ahora el pobre nido, señora, de mi confuso destino; en él nació mi humildad, como en vos nació el amor mío.");
+s(0,"JUANA","¡Que en tan rústica corteza tanta alma pueda caber! Mucho debe a vuestro brío");
+s(0,"RACIMO","Hacedle favor siquiera porque ésta es a la primera que ha dicho “este amor es mío”");
+s(0,"MANCEBÓN","Sólo servir es mi interés");
+s(0,"JUANA","Mi obligación hacia vos confieso");
+s(0,"MANCEBÓN","Yo, mi amor.");
+d(0,"Sale Don Rodrigo.");
+s(0,"RODRIGO","¿Qué ha sido eso? Señora.");
+s(0,"JUANA","Nada, habiéndoos visto ya.");
+s(0,"QUIRCIA","Al subir de esa ladera, tomó la vuelta al revés el coche, y… dando al través, dos mil pedazos se hiciera con ella, si no llegara este gallardo mancebo, a quien la vida le debe.");
+s(0,"QUIRCIA","Si su riesgo no evitara… deteniendo la violencia del coche con tal furor, que sometió su valor al peligro");
+s(0,"ENRIQUETA","Notable suceso ha sido, y suerte que en la ocasión llegase este mancebón");
+s(0,"MELISA","Tan fuerte como atrevido");
+s(0,"MENGA","Ay…cómo os sentís del susto, Señora");
+s(0,"JUANA","Ay…ya más sosegada");
+s(0,"RODRIGO","Todos hoy, en este lugar, nos hemos de detener y os podréis reponer, sobrina, a descansar; puesto que la suerte ha querido que sucediese en este lugar donde vive este mancebo que el coche, por suerte ha detenido");
+s(0,"RACIMO","¡Y yo! ¿Somos los demás zambos?");
+s(0,"MANCEBÓN","¡Calla, loco!");
+s(0,"RACIMO","¿No tendré también mi parte?");
+s(0,"RODRIGO","¿Por qué?");
+s(0,"RACIMO","Porque él actuó por ambos; y entre los dos a porfía el daño se remedió: él con la fuerza que puso..., y yo con los gestos que hacía");
+s(0,"RODRIGO","Muy buena ayuda en vos tuvo");
+s(0,"QUIRCIA","Aunque el lance fue rodado, el coche quedó parado");
+s(0,"QUIRCIA","pero el mozo bien anduvo");
+s(0,"MANCEBÓN","No atendáis su locura. En tan dichosa demanda, no fue el móvil mi valor, sino causa superior que en esos momentos manda. Así que el haberos servido ya basta para estar pagado y agradecido.");
+s(0,"RODRIGO","En pagar tal voluntad siempre mi honor se afana.");
+d(0,"Una voz grita: ¡Viene otro coche! — Es el Rey.");
+s(0,"RODRIGO","¡Oh! El Rey. Es que habrá sabido el suceso y quiere venir a ver en persona si algún mal te ha sucedido");
+s(0,"VOCES","¡El rey! ¡El rey! ¡El rey!");
+s(0,"JUANA","¡El rey es!");
+s(0,"RODRIGO","Vamos a besar sus pies.");
+s(0,"JUANA","¡Vamos! Adiós, que allá nos veremos");
+s(0,"MANCEBÓN","He quedado ciego ya; mas con todo, seguiré de vuestra luz los despojos; y, pues me lleváis los ojos, en cualquier lugar os veré");
+d(0,"Se van Juana y Rodrigo.");
+s(0,"ENRIQUETA","Ya llegan donde está el Rey, que con notable agasajo los recibe.");
+s(0,"MELISA","Y en un coche con otras damas ha entrado la nuestra");
+s(0,"MENGA","Yendo al estribo el buen viejo en un caballo.");
+s(0,"QUIRCIA","Sin duda debe ser señora de gran agrado..., y como a una cualquiera le hablaba este mentecato.");
+s(0,"QUIRCIA","Como si se lo hiciera a Rufina, la hija de Pedro Pablo, u a otra moza del lugar");
+s(0,"RACIMO","¡Miren como se ha quedado! ¡Amante! ¡Mujer de Lot! ¡Que pareces estatua de mármol..., vámonos que ya se han ido");
+s(0,"MANCEBÓN","Toda la luz del día se ha llevado en sus ojos");
+s(0,"RACIMO","Y por eso a oscuras quedamos");
+s(0,"MANCEBÓN","¿De mis penas haces burlas?");
+s(0,"RACIMO","Pues di, pazguato, ¿tanto en un santiamén quieres? ¿en un tris adoras tanto?");
+s(0,"MANCEBÓN","No sé qué fue lo que en el pecho me introdujeron los rayos de aquellos soles; no sé qué hechizo en las rosas de sus mejillas he hallado; veneno que, en la locura, no se vale del recato. No sé qué encanto en lo dulce de su voz me ha transformado, que por mi alma me pregunto y no sé dónde me hallo. De suerte que, en la belleza de esta mujer, me han dejado absorto, abrasado y muerto su luz, su hechizo y su encanto.");
+s(0,"RACIMO","¿Estás loco? ¿No reparas que sigues el viento en vano, y que igualarse no puede a la seda el paño basto?");
+s(0,"MANCEBÓN","No es eso lo que preocupa ni a mi amor ni a mi cuidado, que siempre mis pensamientos han de perderse por altos.");
+s(0,"RACIMO","Vamos, pero por San Pito que debes estar borracho y que esa mujer sin duda se te ha subido a los cascos");
+s(0,"MANCEBÓN","¡Sígueme y calla!");
+d(0,"Sale Beltrán de camino.");
+s(0,"BELTRÁN","¿Sabéis si los Reyes han pasado?");
+s(0,"MANCEBÓN","Sí, amigo, adelante van");
+s(0,"BELTRÁN","¿Estarán ya en Los Palacios?");
+s(0,"RACIMO","¡Vaya y pregúntelo al Rey!");
+s(0,"BELTRÁN","Y, ¿es cierto que se ha volcado de la Rica Hembra el coche al subir estos peñascos sin causarle ningún daño?");
+s(0,"MANCEBÓN","¿Quién es esa Rica Hembra hermano?");
+s(0,"BELTRÁN","Dª Juana de Mendoza, de la hermosura milagro, a quien llaman en Castilla la Rica Hembra de Campos. No hay rico hombre que, rendido por su belleza y estado, no la sirva y agasaje, emocionado.");
+s(0,"MANCEBÓN","¿Pero la cortejan tantos?");
+s(0,"BELTRÁN","Sí..., pero el más favorecido, según dicen en palacio, es un Don Manrique, del Rey pariente y criado");
+s(0,"MANCEBÓN","¿Favorecido?");
+s(0,"BELTRÁN","Así dicen");
+s(0,"MANCEBÓN","¿Mucho?");
+s(0,"BELTRÁN","¿A vos os importa algo?");
+s(0,"MANCEBÓN","Sólo saber");
+s(0,"BELTRÁN","Ninguno la merece mejor, y no porque sea mi amo sino por ser en Castilla el más galán, más bizarro, más liberal, más cortés y más entendido y más guapo.");
+s(0,"MANCEBÓN","¡Villano! Vive el cielo que te arrojo, y que te arrojo tan alto, que con las nubes te estrello");
+s(0,"RACIMO","¡Toma nota del recado!");
+s(0,"BELTRÁN","¿Algún demonio hay en este hombre?");
+s(0,"RACIMO","¿Y a qué va, señor hidalgo, por aquí el Rey?");
+s(0,"BELTRÁN","A Sanlúcar a casar, si no os enfado, una hija, y en Sevilla no ha quedado cortesano que no le siga. Y me voy.");
+s(0,"MANCEBÓN","¡Vete!");
+s(0,"BELTRÁN","Vete tú con el diablo");
+s(0,"RACIMO","¡Bueno va el señor lacayo!");
+s(0,"MANCEBÓN","¡Vamos! Que ya de envidia y de enojo en nuevo incendio me abraso, cuyas llamas, cuyo fuego han de hacer cenizas a cuantos ocasionasen mi ofensa. Pues del Rey Enrique abajo, no han de perdonar mis celos ni el más noble de sus vasallos.");
+d(0,"Se va.");
+s(0,"RACIMO","Y lo hará, que es un demonio. ¡Pobre loco enamorado! Que yo bien lo conozco y cuando se le mete algo en la chorla... ¡Se nota que es de los Palacios!");
+d(0,"Se va. Salen Juana, Isabel y Rufina a una calle del pueblo.");
+s(0,"RUFINA","Un palacio es cada casa de Los Palacios, y ya bien el nombre le vendrá, pues a él la corte se pasa. Y más la mía, que goza dos huéspedas tan garridas, alindadas y pulidas.");
+s(0,"ISABEL","No sois vos muy mala moza...");
+s(0,"RUFINA","Fáltanos ese donaire que es esta muy corta villa, aunque estar junto a Sevilla nos puede dar algún aire");
+s(0,"JUANA","Nada necesitáis; que buen garbo tenéis");
+s(0,"RUFINA","Es merced que me hacéis.");
+s(0,"JUANA","Y decid, ¿cómo os llamáis?");
+s(0,"RUFINA","Rufina, por mis cuidados sin duda");
+s(0,"ISABEL","¿Y vos sois labradora?");
+s(0,"JUANA","¿Sois casada?");
+s(0,"RUFINA","No, señora, doncella por mis pecados, pues no logro el interés de quien por mí es amado");
+s(0,"ISABEL","¿Es de aquí ese galán?");
+s(0,"JUANA","¿No era de este lugar aquel cura que sabía tanto de la astrología?");
+s(0,"RUFINA","Sí, señora, de aquí fue");
+s(0,"ENRIQUETA","Y vivía en la calle del hospital");
+s(0,"JUANA","Fue singular");
+s(0,"ISABEL","¿Murió rico?");
+s(0,"RUFINA","No, señora; porque el ingenio más grave todo lo que quiere sabe y sólo ser rico ignora.");
+s(0,"MELISA","Y así, aunque tanto sabía, nunca supo hacer dinero.");
+s(0,"MENGA","Ahí dejó por heredero de lo poco que tenía a Pero Alonso, su hermano, que es alcalde del lugar");
+s(0,"QUIRCIA","Con cargo de alimentar a un mancebo sevillano que desde niño crió...");
+s(0,"ENRIQUETA","Si no es que nació en su casa, como alguna vez se ha dicho...");
+s(0,"ISABEL","Eso se pasa ya de malicia");
+s(0,"RUFINA","Pues no; porque siempre oí decir que una principal señora, que no vive en Sevilla ahora, vino a su casa a parir.");
+s(0,"MELISA","Y por ser tan principal siempre el nombre se ha callado.");
+s(0,"QUIRCIA","Mas salió un niño tan honrado, tan cortés, tan liberal…");
+s(0,"QUIRCIA","…que da de quién es indicio");
+s(0,"ISABEL","¡Educole el cura bien!");
+s(0,"RUFINA","En armas es superior y en letras nadie le iguala. Y cuando monta a caballo, fuerte, bizarro y galán, todos los sentidos van a los ojos a mirarlo, y del pueblo suspendido la admiración va llevando tras de sí, de todos alcanzando el aplauso enloquecido");
+s(0,"ISABEL","Según le pintáis aquí, perfecto resulta el mozo, si además es discreto");
+s(0,"RUFINA","Aunque rústica, os prometo que me lo parece a mí");
+s(0,"JUANA","¡Debéis de quererle bien!");
+s(0,"RUFINA","Algo de eso hay, por mi mal");
+s(0,"ISABEL","¿No os corresponde?");
+s(0,"RUFINA","Semejante resulta a su gala su desdén. Nunca escuchan sus bríos al amor ni a sus intentos, ni sus altos pensamientos atienden por bajos a los míos");
+s(0,"JUANA","Yo deseo verle aquí aunque sólo sea por vuestra pasión");
+s(0,"RUFINA","¿No habéis visto a un Mancebón sin espada por ahí?");
+s(0,"JUANA","Sí, sí, ya lo he visto yo. Pues sin duda es, prima mía, el que con valentía al despecharse paró mi coche, y salvó mi vida del peligro de morir");
+s(0,"RUFINA","A un toro le ha de medir en el prado la embestida");
+s(0,"JUANA","Si es él, no resulta extremo haberle tanto alabado");
+s(0,"ISABEL","¡Otra Rufina tenemos!");
+s(0,"JUANA","Su talle, su discreción bien se pueden enaltecer");
+s(0,"ISABEL","Ya estoy rabiando por ver, Juana, a ese mancebón.");
+s(0,"RUFINA","Por la calle pasará. Sentaos a la puerta.");
+s(0,"JUANA","¡Sentémonos!");
+s(0,"ISABEL","Quiera Dios que le veamos");
+s(0,"JUANA","Yo sé que me buscará.");
+d(0,"Salen el Mancebón y Racimo, alejados.");
+s(0,"MANCEBÓN","A la puerta de la casa de Rufina, o yo me engaño, está mi dueña y mi daño., pues toda el alma me abrasa; y también está con ella otra dama, al parecer.");
+s(0,"RACIMO","¡Hermosa por cierto es!");
+s(0,"MANCEBÓN","Hermosa es..., mas no es tan bella");
+s(0,"RUFINA","¿Queréis ver al Mancebón? Aquel es, que está en la calle.");
+s(0,"JUANA","¡Bien dices! ¡Bueno es el talle!");
+s(0,"RUFINA","¡Así fuera su pasión!");
+s(0,"JUANA","¡Pues bien sé yo que no es mala!");
+s(0,"RUFINA","Vos sola lo habéis sabido");
+s(0,"MANCEBÓN","Ya me ha visto y se ha reído");
+s(0,"RACIMO","Anda. Vete enhorabuena, que eso es reírse de ti");
+s(0,"MANCEBÓN","Y aquella mirada..., ¿qué es?");
+s(0,"RACIMO","Engañarte");
+s(0,"RUFINA","Su atención, ¿qué podrá ser?");
+s(0,"JUANA","Por ti, Rufina, era");
+s(0,"RUFINA","A las dos os mirará, que a mí no me puede ver");
+s(0,"ISABEL","Juana, a ti sola te mira. ¿Y si está de ti enamorado?");
+s(0,"JUANA","Puede… ser");
+s(0,"ISABEL","Por tu belleza suspira");
+s(0,"JUANA","Isabel, ya sabes, que para la vanidad, son buenos todos, pero… para el favor: ninguno.");
+s(0,"ISABEL","¿Y Don Manrique?");
+s(0,"JUANA","En el trance, apenas un paso ha dado");
+s(0,"ISABEL","Es extraño que no haya venido tras el susto");
+s(0,"JUANA","Con la confusión quizás la posada no ha sabido.");
+s(0,"RACIMO","Acércate, cretino, pide alivio a tu dolor");
+s(0,"MANCEBÓN","Tengo miedo");
+s(0,"RACIMO","¿Tú tienes miedo?");
+s(0,"MANCEBÓN","¿Qué quieres? ¡Temo un desdén!");
+s(0,"RACIMO","¡Llégate!");
+s(0,"MANCEBÓN","Llega tú y me animaré");
+s(0,"RACIMO","¿Enamoras por poderes?");
+s(0,"MANCEBÓN","¡Ve!");
+s(0,"RACIMO","¡Voy!");
+d(0,"Racimo se dirige a las damas.");
+s(0,"RACIMO","Sus mercedes sean al lugar bien venidas, que son muy lindas partidas para los que las desean; pues, por tema o por costumbre, cuantas en Los Palacios están, con ser luces, no darán esperanza ni por lumbre. Dígalo cierto amador que desde hoy a amar comienza con más miedo que vergüenza");
+s(0,"ISABEL","Gracia tiene el labrador");
+s(0,"RUFINA","El recado no es suyo, ¿verdad? (Aparte a Racimo) ¿Me dirás quién te mete, Racimo, en ser alcahuete?");
+s(0,"RACIMO","Lo hago por otro tal");
+s(0,"JUANA","¿Racimo? ¡Nombre notable!");
+s(0,"RACIMO","¡Lo veréis, si me picáis!");
+s(0,"ISABEL","¿Por qué Racimo os llamáis?");
+s(0,"RACIMO","Fue un suceso memorable; yendo a la viña del cura ya para parir mi madre, mas no sabré de qué padre con ser yo la criatura, los dolores la empezaron que a este mundo me trajeron, y Racimo me pusieron porque allí me vendimiaron. Y así, el nombre, no os asombre, mas que de pila es de cuba.");
+s(0,"RUFINA","¡Y está siempre como una uva, para cumplir más con su nombre!");
+s(0,"RACIMO","Habla bien; que juro a Dios...");
+s(0,"ISABEL","Con amores y con celos picados están los dos... ¡buen rato hemos de tener!");
+s(0,"MANCEBÓN","Éste con sus disparates me ha echado el plan a perder.");
+s(0,"RUFINA","No trates de ser en amores mercader.");
+d(0,"El Mancebón hace ademán de irse, pero al ver llegar a Pedro y a Manrique de Lara junto a Juana, vuelve.");
+s(0,"MANRIQUE","¡Locos hemos andado!");
+s(0,"PEDRO","¡Gracias a Dios que os he hallado!");
+s(0,"JUANA","¿Dónde habéis los dos estado?");
+s(0,"MANRIQUE","Yo, sin vos…");
+s(0,"PEDRO","Y yo, conmigo");
+s(0,"MANRIQUE","Que sin vos no hay alegría ni bien para mí, ¡por Dios!");
+s(0,"PEDRO","Y yo, conmigo y sin vos soy la peor compañía.");
+s(0,"MANRIQUE","Y más, habiendo sabido vuestro susto...");
+s(0,"JUANA","Pudo ser muy grande, a no socorrer mi riesgo un hombre atrevido y valiente, que el coche detuvo con fuerza extraña.");
+s(0,"MANRIQUE","Ir en él el sol de España bastó para vencer la noche del accidente fatal. ¿Quién a ese hombre conociera, para que así le agradeciera el gusto?");
+s(0,"MANCEBÓN","(Aparte) No empieza mal; sin duda el favorecido D. Manrique es éste");
+s(0,"RACIMO","(Al Mancebón) Pues... ¿qué hemos de hacer si lo es?");
+s(0,"MANCEBÓN","¡Matarle!, pues me ha ofendido. De pesar estoy rabiando");
+s(0,"RACIMO","¡Pues, matas que es un contento!");
+s(0,"ISABEL","¿Qué hay de las fiestas?");
+s(0,"PEDRO","Ya las tiene el Duque de Arcos prevenidas para luego...");
+s(0,"JUANA","Muy lucidas serán, si él las previene");
+s(0,"MANRIQUE","Como de este lugar es el señor, y por aquí pasan los Reyes, así los pretende agasajar.");
+s(0,"PEDRO","Toros de Ronda ha traído tan ligeros y feroces que parece que veloces rayos por hierba han pacido.");
+s(0,"MANCEBÓN","¡Ya no la puedo sufrir! ¿Qué, con mi dama han de hablar, y yo no lo pueda impedir? ¡No, voto a Dios!");
+s(0,"RACIMO","Vamos allá a estorbar a estos señores.");
+s(0,"MANCEBÓN","(Se acerca a los demás) Pues ya es hora de las fiestas, ¿qué aguardan aquí sus señorías?");
+s(0,"MANRIQUE","¿Hay más necio desenfado? ¿Quién ese recado os dio?");
+s(0,"MANCEBÓN","Como uno del pueblo, yo me encargué de este cuidado.");
+s(0,"MANRIQUE","¡Pues, idos y descuidad!");
+s(0,"RUFINA","De sus celos son extremos");
+s(0,"JUANA","Ya, cuando hemos de ir sabemos, a las fiestas");
+s(0,"MANCEBÓN","Perdonad");
+s(0,"PEDRO","¡Buen porte de Mancebón!");
+s(0,"ISABEL","Sabed que está enamorado de Dª Juana.");
+s(0,"PEDRO","Bien publica su pasión");
+s(0,"ISABEL","La conquista de ella procura");
+s(0,"JUANA","¿Quién sale a alegrar la plaza?");
+s(0,"MANRIQUE","El Duque de Arcos; y yo saliera si un favor vuestro tuviera.");
+s(0,"ISABEL","Dale un favor, prima mía, pues que tanto lo desea. Siquiera porque lo vea el Mancebón; que sería gran fiesta.");
+s(0,"JUANA","Es tan atrevido que sentiría que su enojo le ocasionara un arrojo. Y a quien tanto le he debido, perjudicar no es razón");
+s(0,"ISABEL","Entretenernos así... No es perjudicarle.");
+s(0,"JUANA","A mí me compromete esta obligación");
+s(0,"ISABEL","¿Obligación con un villano, para no burlarse de él?");
+s(0,"JUANA","¡Terrible estás, Isabel!");
+s(0,"ISABEL","Si mereciera tu mano, que no hicieras nada comprendo.");
+s(0,"JUANA","Porque tu deseo lo manda, de D. Manrique esta banda sacaréis.");
+d(0,"Se la va quitando.");
+s(0,"MANCEBÓN","(Aparte) De celos me muero; pero ese no la llevará");
+s(0,"RACIMO","Hombre, ¿qué quieres hacer?");
+s(0,"MANCEBÓN","(Se acerca) Ahora lo verás... Aquí no se hace a nadie favor en la calle, que aquí, con ser aldeanos, en los amantes antojos, está la lengua en los ojos y en el corazón las manos. Ved que la atención se vicia con los extremos que toco, y que es tenernos en poco no temer nuestra malicia; y no es justo que al lugar se pierda la cortesía, y quien demostrar la debía nos venga a escandalizar.");
+s(0,"MANRIQUE","¿Quién os mete en esto a vos? ¿Os consideráis bachiller?");
+s(0,"MANCEBÓN","Y... ¿qué os consideráis vos?");
+s(0,"MANRIQUE","¡Vive Dios!");
+s(0,"ISABEL","¡Lance cruel!");
+s(0,"RUFINA","Por su peligro estoy temblando");
+s(0,"JUANA","¿No lo dije yo, Isabel?");
+s(0,"MANRIQUE","Yo si cuerdo, no mirara que tú estás loco, villano, a enseñarte a ser cortesano unos lacayos mandara.");
+s(0,"MANCEBÓN","Pues, hidalgo, voto a Dios, que sólo con estos brazos los hiciera más pedazos que soberbia tenéis vos.");
+s(0,"MANRIQUE","¿Habráse visto atrevimiento igual? (Mientras saca la daga.) Te mataré por grosero, aunque se manche mi acero.");
+s(0,"MANCEBÓN","Es muy limpio ese sayal");
+s(0,"PEDRO","Deteneos; no se diga que así un villano os inquieta");
+s(0,"MANRIQUE","¡Dejadme!");
+s(0,"PEDRO","Ved que de su error le disculpa su ignorancia");
+s(0,"MANRIQUE","¿Y he de sufrir su arrogancia?");
+s(0,"MANCEBÓN","Yo sé a quién la está mejor");
+s(0,"MANRIQUE","¡Ahora lo verás!");
+s(0,"RACIMO","¡San Pablo!");
+s(0,"RUFINA","¡Detente, Alonso!");
+s(0,"RACIMO","¿Es que os maneja el diablo?");
+s(0,"PEDRO","El Rey pasa por aquí, y no es bueno que os halle así, por tan pequeña ocasión.");
+s(0,"MANRIQUE","(Envainando la daga) Pues, débale su venida el no castigar su despejo, mas..., para luego lo dejo");
+s(0,"JUANA","Por deberle yo la vida, le podrías perdonar.");
+s(0,"MANCEBÓN","Por mí no debéis implorar.");
+s(0,"JUANA","¡Vamos!");
+s(0,"MANRIQUE","Perdí la ocasión de verme favorecido; tened, pues sois atrevido, más defensa y más razón.");
+d(0,"Se va.");
+s(0,"PEDRO","El que sin armas se ve, no ha de andar tan arrojado.");
+d(0,"Se va.");
+s(0,"RUFINA","Con altanero habéis dado; cuidado tened con él.");
+d(0,"Se va.");
+s(0,"ISABEL","La cólera más templada tenga vuestro desvarío.");
+d(0,"Se va.");
+s(0,"JUANA","Con esa edad y esos bríos ¿por qué no os ceñís la espada?");
+d(0,"Se va.");
+s(0,"MANCEBÓN","Vive Dios que estoy aturdido de ver lo que por mí pasa, pues hacen burla de mí. ¡Como me miran sin armas! Yo las buscaré y verán que es verdad y no arrogancia lo que no llegó a las obras por quedarse en palabras");
+d(0,"Sale Pero Alonso, labrador con barbas.");
+s(0,"MANCEBÓN","¡Ven conmigo!");
+s(0,"PERO","¿Dónde vas, la color alborotada, descompuestas las facciones y presurosas las plantas? ¿Qué es lo que te ha sucedido? ¿En qué andas? ¿Qué te han hecho? ¿Que te han dicho?");
+s(0,"MANCEBÓN","Todos de ofenderme tratan; ¡como sin armas me ven..! Hasta decirme mi dama, por ultraje, por desprecio a mi condición bizarra: “Con esa edad y esos bríos, ¿Por qué no ceñís la espada?”");
+s(0,"PERO","¿Qué dama? ¿Tienes alguna en el lugar?");
+s(0,"MANCEBÓN","Es más alta. Por quien ha sido milagro no zurrarnos la badana ahora..., pero no es tarde");
+s(0,"PERO","¿Hay locura más extraña? Debes de haber olvidado con la pasión que te arrastra, lo que me encargó tu padre en sus postreras ansias: que no te dejara ceñir espada jamás, si no te la ciñera el Rey.");
+s(0,"MANCEBÓN","Y, ¿han de aguardar tantas burlas ese imposible?");
+s(0,"PERO","¿Qué quieres? Sabiendo cuán celebrada del Cura de Los Palacios fue la ciencia en toda España, ¿vas a burlar su advertencia a costa de tu desgracia?");
+s(0,"MANCEBÓN","Pues..., ¿qué he de hacer, cuando todos groseramente me ultrajan porque sin espada estoy?");
+s(0,"PERO","Obedecer lo que mandan las estrellas");
+s(0,"RACIMO","Y traer en su lugar una palanca; y, puesto que te haces un hombre hacerlo basto, basta, ya que una espada no tienes, usar una buena tranca.");
+s(0,"PERO","Deja de locuras y dime que le ha sucedido");
+d(0,"Voces dentro: ¡Guarda, guarda el toro, guarda el toro!");
+s(0,"MANCEBÓN","¿Qué es esto?");
+s(0,"ENRIQUETA","¡Desdicha rara!");
+s(0,"MELISA","¡Haberse soltado un toro!");
+s(0,"MENGA","¡Estando el Rey en la plaza!");
+s(0,"QUIRCIA","¡Y es un rayo desatado!");
+s(0,"ENRIQUETA","Ni más destructora, pues ya tiene rota la guardia de una vez que se le ha puesto.");
+s(0,"MANCEBÓN","(Aparte) Hoy haré inmortal mi fama. Gracias a Dios, que para esto no habré de menester espada.");
+d(0,"Se va.");
+s(0,"ENRIQUETA","¡Aguarda, Alonso! ¿Qué intentas?");
+s(0,"MELISA","¡Irse al toro cara a cara!");
+s(0,"MENGA","¡A gran peligro se arroja!");
+s(0,"QUIRCIA","¡Con cortesía le aguarda, pues le hace reverencias en la arena!");
+s(0,"ENRIQUETA","¡El verle espanta! Ya embiste. ¡Dios te libre!");
+s(0,"MELISA","¡Como si fuera una paja, asiéndole por los cuernos le pone en el suelo la espalda!");
+s(0,"ENRIQUETA","¡Viva el Mancebón! ¡Viva!");
+s(0,"MELISA","Ya todo el pueblo le aclama");
+s(0,"MENGA","Y el Rey, con toda su gente, ya viene hacia esta parte");
+s(0,"QUIRCIA","¡A la plaza! ¡A la plaza!");
+d(0,"Salen el Rey, D. Rodrigo, D. Pedro, D. Manrique, Dª Juana, Dª Isabel y el acompañamiento.");
+s(0,"REY","¡No he visto mayor valor!");
+s(0,"PEDRO","Con justa razón le alabas");
+s(0,"JUANA","¡Que destreza!");
+s(0,"ISABEL","¡Que osadía!");
+s(0,"RODRIGO","Este fue también señor el que libró Dª Juana.");
+s(0,"REY","¿Qué decís? ¡Llamadle acá! Bien se conoce en su traza que es capaz de todo.");
+d(0,"Aparece el Mancebón.");
+s(0,"MANCEBÓN","A vuestros pies mi humildad, con postrarse se levanta.");
+s(0,"REY","Llegad a mis brazos; que bien lo merece vuestra hazaña.");
+s(0,"MANCEBÓN","Si tanta merced, Señor, como me hacéis, esperara, el toro que pace estrellas hubiera puesto a mis plantas.");
+s(0,"REY","¿Sois de este lugar?");
+s(0,"MANCEBÓN","Aquí ha sido mi pobre patria");
+s(0,"REY","Siendo tan hombre y tan fuerte, ¿por qué no ceñís la espada?");
+s(0,"MANCEBÓN","Porque sé de ciencia cierta, que un gran riesgo me amenaza si no me la ciñe el Rey.");
+s(0,"REY","Sin duda, vuestro valor lo merece. Dadme una espada; que quiero que por mí, desde hoy la traiga");
+s(0,"RACIMO","¡Salióse con lo que más deseaba!");
+s(0,"PERO","Aquí empiezan los prodigios que las estrellas señalaban en su extraño nacimiento y el cura pronosticaba.");
+d(0,"Sale un criado con una espada en una bandeja.");
+s(0,"REY","¡Venga!");
+s(0,"MANCEBÓN","¿Hay mayor dicha?");
+s(0,"REY","Dios os haga buen caballero");
+s(0,"MANCEBÓN","Sí lo hará, pues para ello, con ceñírmela me basta.");
+s(0,"REY","Y porque me ha agradado vuestra persona gallarda, desde hoy, quiero que seáis gentil hombre de mi casa.");
+s(0,"MANCEBÓN","Por todo os beso los pies");
+d(0,"Saliendo de escena el Rey.");
+s(0,"PEDRO","Muy bien parecéis con arma");
+s(0,"RODRIGO","Del favor que os hace el Rey mucho mi alborozo alcanza");
+s(0,"MANRIQUE","(Aparte) ¡Que estos extremos con un villano se hagan!");
+s(0,"MANCEBÓN","Dios os guarde");
+s(0,"JUANA","En vuestros buenos sucesos soy yo muy interesada, por lo mucho que os debo.");
+s(0,"MANCEBÓN","Pues poned en esta cuenta mi alma, que si en algo a vos os sirve, no me servirá de nada.");
+s(0,"JUANA","Siempre se agradece un alma que es tan bizarra.");
+d(0,"Se va.");
+s(0,"ISABEL","Yo os ofrezco desde aquí el seros, con Dª Juana, buena alcahueta.");
+d(0,"Se va.");
+s(0,"MANCEBÓN","¡A Sevilla iré por esas palabras!");
+d(0,"Fin de la Jornada Primera.");
+
+// ══════════ JORNADA 2ª ══════════
+d(1,"Salen Rufina de dama y Racimo de lacayo.");
+s(1,"RACIMO","Rufina, ¿tú por acá también?");
+s(1,"RUFINA","Pues, ¿qué te ha admirado?");
+s(1,"RACIMO","¡Haberte en palacio hallado, tan metida a dama ya!");
+s(1,"RUFINA","Mis huéspedas me trajeron acostumbradas a mí. ¿Y tú qué haces, Racimo?");
+s(1,"RACIMO","Estar de un loco colgado. De ese mancebón al trote sigo la loca esperanza, para ser el Sancho Panza de este nuevo D. Quijote. Y la Rica Hembra es quien, con su amor y su desdén, ocasiona su locura.");
+s(1,"RUFINA","¿Es que le trae tan perdido?");
+s(1,"RACIMO","¿Nos ayudareis en sus intentos?");
+s(1,"RUFINA","¡¿No los voy a ayudar?!");
+s(1,"RACIMO","(Aparte) ¡Con falsedad ha respondido!");
+s(1,"RUFINA","Adiós; que tengo que hacer");
+s(1,"RACIMO","¿Y dónde se podrán ver estas flechas de Cupido ahora?");
+s(1,"RUFINA","En el mirador que cae al Guadalquivir estarán a ver venir al Rey. ¡Vaya con Dios! ¡Vaya el lacayito novel!");
+s(1,"RACIMO","El haber mudado saya el juicio te desgovierna trastocándote la cholla.");
+d(1,"Sale Beltrán.");
+s(1,"BELTRÁN","¡Qué digo señor hidalgo!...");
+s(1,"RACIMO","¿Qué dice señor figura?");
+s(1,"BELTRÁN","Que esa moza es cosa mía, por quien de amor me hago rajas.");
+s(1,"RACIMO","Con muchas de estas alhajas podrá casarse en dos días");
+s(1,"BELTRÁN","Esta espada defenderla en todo intenta, porque corre de mi cuenta.");
+s(1,"RACIMO","Estará ya muy cansada");
+s(1,"BELTRÁN","Ya he dicho que esta señora es mi salve");
+s(1,"RACIMO","Y desde ahora, será su entierro");
+s(1,"RUFINA","A la taberna, vidas mías, que tenéis muchas tonterías");
+s(1,"BELTRÁN","¿No conoces mi violencia?");
+s(1,"RACIMO","¿Ni tú de mi furia los rayos?");
+s(1,"RUFINA","Lo que sé es que a los lacayos arregla el vino las pendejas.");
+s(1,"BELTRÁN","Pues advierte que, aunque aquí tan mesurado me ves, te sabré matar muy bien.");
+s(1,"RACIMO","Yo te mataré así, así");
+s(1,"RUFINA","¡Me voy!");
+d(1,"Se va.");
+s(1,"BELTRÁN","¡Aguarda!");
+s(1,"RACIMO","¡Espera!");
+s(1,"BELTRÁN","Pelea, que tu fin fatal me vengará");
+s(1,"RACIMO","Me hace mal pelear tan de mañana; déjalo para después.");
+s(1,"BELTRÁN","Mi furia no sufre espacio.");
+s(1,"RACIMO","Pues, salgamos de palacio.");
+d(1,"Entra El Mancebón de gala y se turba Beltrán.");
+s(1,"MANCEBÓN","¡Racimo! ¿Dónde, tan resuelto vas?");
+s(1,"RACIMO","¡A pelear una mohína!");
+s(1,"MANCEBÓN","¿Con quién?");
+s(1,"RACIMO","Con este gallina");
+s(1,"MANCEBÓN","¿Vos, queréis reñir con él?");
+s(1,"BELTRÁN","No, señor, ni se me ha pasado por la cabeza el enfado; es más soy su amigo fiel.");
+s(1,"MANCEBÓN","¿Por qué disimuláis?");
+s(1,"RACIMO","Reñir quería y yo con él, porque tiene muy mal perder.");
+s(1,"MANCEBÓN","Pues, si en reñir os empeñáis, cerca estamos de Tablada; yo apadrinaré a los dos, y el que huyere, voto a Dios que ha de probar mi espada.");
+s(1,"RACIMO","El miedo me domina.");
+s(1,"BELTRÁN","Me da muy mala espina pelear más que de palabra");
+s(1,"MANCEBÓN","Pues, ¿qué queréis?");
+s(1,"BELTRÁN","Yo quería que me dejéis ir con Dios..., y estar a cien leguas de vos.");
+s(1,"MANCEBÓN","¡Bien muestras tu cobardía! ¡Vete, pues!");
+s(1,"BELTRÁN","¡De mil amores!");
+s(1,"RACIMO","Si se quedara el picarón, bien que llevara algo bueno que contar");
+s(1,"MANCEBÓN","¡Tus temores!");
+s(1,"RACIMO","No soy hombre conocido en peleas ni enfados; pero sin llegar a las manos no me doy por vencido");
+s(1,"MANCEBÓN","Yo ya sé tus valentías. Mas di, ¿dónde estará ahora el cielo que mi alma adora?");
+s(1,"RACIMO","Saldrá a estas galerías muy presto");
+s(1,"MANCEBÓN","¿Quién te lo ha dicho?");
+s(1,"RACIMO","Rufina");
+s(1,"MANCEBÓN","¡Al fin a estos miradores, saldrá con luz soberana la señora Dª Juana!");
+s(1,"RACIMO","¡Como Dios hizo las flores! Y, ¿qué intenta tu fineza?");
+s(1,"MANCEBÓN","Morir por ella y por mí.");
+d(1,"En lo alto Dª Juana y Dª Isabel en los miradores.");
+s(1,"JUANA","¡Que bien desde aquí, Isabel, se contempla el río!");
+s(1,"ISABEL","Aunque intente a su cristalina frente perturbar tanto bajel, envidia es de los mares.");
+s(1,"JUANA","De los naranjos la suma quieren parecer su espuma los cándidos azahares.");
+s(1,"ISABEL","¡Es la joya de Sevilla!");
+s(1,"JUANA","Sí, que en todo la enriquece, pues de oro y plata guarnece la esmeralda de su orilla");
+s(1,"MANCEBÓN","¡Ya ha salido; vete!");
+s(1,"RACIMO","Me voy, temiendo a aquel encontrarme; pues, sólo con querer darme por descalabrado me doy.");
+d(1,"Se va.");
+s(1,"ISABEL","Juana, allí está tu galán");
+s(1,"JUANA","Y galán, de los más finos");
+s(1,"ISABEL","Bueno es que te lo parezca");
+s(1,"JUANA","¿Por qué no ha de parecerme fino quien lo sabe ser?");
+s(1,"MANCEBÓN","¿Será mejor que yo me ofrezca a su vista o esperar que me llame compasiva?");
+s(1,"ISABEL","Yo lo llamo, que no es justo maltratar tan buena fe");
+s(1,"JUANA","Si tú gustas... llámale");
+s(1,"ISABEL","Mas lo hago por tu gusto");
+s(1,"JUANA","¿Por mi gusto? ¡Eso es ofenderme, pues esto es entretenerse sólo!");
+s(1,"ISABEL","(Al Mancebón) ¿Por qué no llegáis?");
+s(1,"MANCEBÓN","Mi temor me hace que aguarde; que en amor el más valiente es el que está más cobarde.");
+s(1,"JUANA","¿Miedo podéis vos tener, con tanto valor?");
+s(1,"MANCEBÓN","Sí puedo, que de ofender es el miedo, si es que amor puede ofender.");
+s(1,"JUANA","Y decid, ¿cómo os va por aquí? ¿de gusto?");
+s(1,"MANCEBÓN","No sé, por Dios; sólo sé que sois, señora, por quien muero y por quien vivo.");
+d(1,"Sale D. Manrique de Lara con Beltrán y otros criados.");
+s(1,"MANRIQUE","¿Hay desvergüenza mayor?");
+s(1,"JUANA","¡Retiraos, por vuestra vida!");
+s(1,"MANCEBÓN","Ya me ha visto. Perdonad; que yo no he de ser cobarde porque me lo hayáis mandado.");
+s(1,"JUANA","Veamos en qué acabará mi temor y su porfía.");
+s(1,"MANRIQUE","¿Qué hace un hombre como Vos ahí abajo?");
+s(1,"MANCEBÓN","Mirar estas damas, para dar mil alabanzas a Dios.");
+s(1,"MANRIQUE","Y decid, ¿cómo arrogante, delante de mí os ponéis?");
+s(1,"MANCEBÓN","Con iros vos, no veréis si estoy detrás o delante");
+s(1,"MANRIQUE","Mal de vuestra vida cuidáis");
+s(1,"MANCEBÓN","¿Tan aprisa por mis daños, podréis eliminarme vos..., habiendo tardado Dios en criarme tantos años?");
+s(1,"MANRIQUE","¡Ahora lo veréis!");
+s(1,"JUANA","Dejadle; ¡Ah D. Manrique, mirad que estoy aquí!");
+s(1,"MANRIQUE","¡Perdonad! (Sacan todos las espadas.) ¡Matadle!; que así castigo a un villano");
+s(1,"MANCEBÓN","No es tan fácil como piensa, teniendo yo en mi defensa este acero y esta mano");
+d(1,"Comienza a dar cuchilladas.");
+s(1,"JUANA","¡Con qué fuerza y con que brío se burla de sus espadas!");
+s(1,"ISABEL","Y a todos a cuchilladas los ha metido en el río");
+d(1,"Se van. Sale el Mancebón, envainando la espada. Por otra parte el Rey, D. Pedro y criados.");
+s(1,"MANCEBÓN","Ya queda bien castigada su soberbia");
+s(1,"REY","¿Qué es esto?");
+s(1,"MANCEBÓN","Resolved por mí, pues para esto me ceñisteis la espada");
+s(1,"REY","No os la ceñí para ser soberbio, loco y altivo, que yo os la di para defensa y la traéis para peligro. ¡Basta! Sepamos con quien la pelea ha sido");
+s(1,"MELISA","Con D. Manrique de Lara");
+s(1,"REY","¿Con D. Manrique...?");
+s(1,"MELISA","Así me han dicho");
+s(1,"REY","¿Hay mayor atrevimiento? ¡Que con un hombre tan digno de mi estimación, tan grande en Castilla, haya tenido osadía y desahogo un bárbaro inadvertido de sacar con él la espada!...");
+s(1,"PEDRO","Debió ofenderle, pues fizo defensa de su valor");
+s(1,"REY","No lo disculpéis sobrino");
+s(1,"MELISA","Aún es mayor la desdicha: que quedan de muerte heridos D. Manrique y dos criados");
+s(1,"REY","Mayor traición no se ha visto. Ea. ¿Qué aguardáis? Llevadle y, sin buscar más testigos, que luego le ahorquen");
+s(1,"MANCEBÓN","(Aparte) Más siento su enojo que mi castigo");
+d(1,"Le quitan la espada.");
+s(1,"MANCEBÓN","Puesto que muero. Que me escuchéis os suplico");
+s(1,"REY","¿Qué he de escucharos? ¡Llevadle!");
+s(1,"PEDRO","Oídlo, Señor, oídlo; porque en vos lo justiciero no parezca vengativo.");
+s(1,"REY","Por vos lo voy a escuchar");
+s(1,"PEDRO","Por gran merced lo recibo");
+s(1,"REY","(Dirigiéndose al Mancebón) ¿Qué queréis?");
+s(1,"MANCEBÓN","Que ya, Señor, que el rigor de mi destino hoy a morir me condena por haberle ofendido, no muera como villano aunque villano he nacido. Sangre pide mi garganta, y si es que muera el designio, ¿qué más tiene, qué más tiene darme un cordel que un cuchillo? Esto os suplica mi ruego a vuestras plantas rendido: que moriré contento, si hay en el morir alivio con que no logre la muerte tan vergonzoso martirio");
+s(1,"REY","En lo que me habéis pedido, además de mi indignación, mi justicia contradigo; pues, si ese privilegio os concediera benigno, por daros lo que no os toca se me quejara el delito. Así que, haced lo que he mandado. ¡Ahorcadle!");
+s(1,"MANCEBÓN","Advertid, más compasivo, que soy hidalgo por ley, si por sangre no lo he sido; pues, lo mejor presumiendo, en ella es uso antiguo hacer hidalgo al que nace de padres desconocidos.");
+s(1,"REY","(Volviéndose) ¿Qué vos no conocéis padres?");
+s(1,"MANCEBÓN","No Señor, no los conozco");
+s(1,"REY","¿Del lugarcillo donde os vi la primera vez, no sois?");
+s(1,"MANCEBÓN","Que nací allí dijo el Cura de Los Palacios, que me crió desde niño");
+s(1,"REY","(Volviéndose del todo) Luego, ¿en casa del cura os criasteis?");
+s(1,"MANCEBÓN","Como a hijo me tuvo siempre, y yo a él, obediente a su dominio, le obedecí como a un padre.");
+s(1,"REY","(Aparte) ¿Hay caso más peregrino? Y... ¿cómo os llamáis?");
+s(1,"MANCEBÓN","Alonso Enríquez");
+s(1,"REY","(Aparte) Cielos, ¿qué he oído? Acabóse: el corazón hizo cierto el vaticinio. Y, ¿sabéis por qué os llamaron Alonso Enríquez?");
+s(1,"MANCEBÓN","El mismo Cura, que de estos secretos debió ser el archivo, me dijo, Señor, que un conde pasó, tal vez de camino, llevándome a bautizar. Y, hallándose en mi bautismo, de pila me sacó, usando aquel piadoso ejercicio. Púsome por nombre Alonso por su padre y apellido de Enríquez me dio por él; pues según el cura dijo, se llamaba el Conde Enrique.");
+s(1,"REY","(Aparte) ¡Notable suceso ha sido! Yo soy ése que era entonces Conde, aunque ahora me nombre Rey de Castilla y León. Y vos sois..., pero, ¿qué digo? Estréchese por ahora en el pecho el regocijo hasta mejor ocasión.");
+s(1,"REY","(A D. Rodrigo) ¿Qué hay de nuevo, D. Rodrigo?");
+s(1,"RODRIGO","Que D. Manrique por nada tiene la herida peligro; pues es, Señor, tan pequeña que apenas queda resquicio. Solamente dos criados son los que están malheridos.");
+s(1,"MANCEBÓN","A buen riesgo me han traído amor, valor y desdicha");
+s(1,"REY","¡Llevad preso a D. Alonso Enríquez... a una torre de palacio!");
+s(1,"REY","No temáis, que al Rey tenéis por padrino");
+d(1,"Se van. Salen Dª Juana y Dª Isabel.");
+s(1,"ISABEL","¿Qué te pareció el suceso del Mancebón?");
+s(1,"JUANA","Tan extraño, que temí en él mayor daño. ¡Racimo!");
+s(1,"RACIMO","¡Señora mía! Voy a buscar un amo que Dios me dio, que, por loco, se perdió y apenas él se encontrará");
+s(1,"ISABEL","¿No sabes que está preso?");
+s(1,"RACIMO","Ya lo sé, mas no sé dónde,");
+s(1,"JUANA","Preso en una torre está");
+s(1,"RACIMO","¿En cuál, que admiro el decoro?");
+s(1,"JUANA","Pienso que es en la del Oro.");
+s(1,"RACIMO","¡Eso es lo que faltaba!");
+s(1,"JUANA","Pues, porque mi obligación es hacer que alivie su pena, llévale esta cadena");
+d(1,"Le entrega una cadena que quita de su cuello.");
+s(1,"RACIMO","Novedad le llevo..., y buena.");
+s(1,"JUANA","¿Cuál?");
+s(1,"RACIMO","Que por este hermoso favor, sea su prisión menor aunque añada la cadena.");
+s(1,"JUANA","Vete y vuelve");
+d(1,"Sale D. Pedro.");
+s(1,"PEDRO","Aquí esta Dª Isabel");
+s(1,"JUANA","¡D. Pedro!");
+s(1,"ISABEL","Seáis bien venido.");
+s(1,"PEDRO","Sabed que convalecido del accidente cruel, está D. Manrique ya...");
+s(1,"ISABEL","Alégrome de que esté bueno.");
+s(1,"JUANA","Mayor que el rayo fue el trueno si tan pronto sano está.");
+s(1,"PEDRO","Yo os doy el parabién.");
+s(1,"JUANA","Mal entendéis mi alegría.");
+s(1,"PEDRO","Pues..., ¿no es vuestro...?");
+s(1,"JUANA","¡No, yo soy mía!");
+s(1,"PEDRO","¿Y su amor?");
+s(1,"JUANA","¿Y mi desdén?");
+s(1,"ISABEL","¿Qué hay del Mancebón?");
+s(1,"PEDRO","Ninguna novedad; pasó el rigor, y soplará en su favor el arte de la fortuna según las señas se ven.");
+d(1,"Sale el Rey.");
+s(1,"REY","Alégrome de haberos visto tan recuperado");
+s(1,"MANRIQUE","Fue leve la herida");
+s(1,"REY","Puesto que ya estáis tan convaleciente, y puesto que ocasionasteis vos la pelea, bien se puede tratar de las amistades.");
+s(1,"MANRIQUE","Con quien es tan diferente ¿qué amistades puedo hacer?");
+s(1,"REY","No hay diferencia, creedme. Que es tan bueno como vos");
+s(1,"MANRIQUE","Porque vuestra alteza quiere.");
+s(1,"REY","No, sino porque en la sangre a nadie de España debe. Bueno es que los dos se asienten");
+s(1,"REY","No repliquéis; que a mi servicio conviene.");
+d(1,"Salen D. Pedro, el Mancebón y Racimo.");
+s(1,"MANCEBÓN","A vuestros pies,");
+s(1,"REY","Levantaos y dad la mano a D. Manrique de Lara.");
+s(1,"MANCEBÓN","No puede negársela mi amistad.");
+s(1,"MANRIQUE","(Aparte) ¿Hay deshonras más crueles?");
+s(1,"MANCEBÓN","¡Esta es mi mano!");
+s(1,"MANRIQUE","Y la mía; agradecédsela al Rey.");
+s(1,"MANCEBÓN","Vos podéis agradecerle, habiendo quedado vivo, que yo amigo vuestro quede.");
+s(1,"REY","¿Qué es esto?");
+s(1,"MANCEBÓN","Son... cumplimientos.");
+s(1,"RACIMO","Con traza de remoquetes. De esto voy a dar aviso a la Rica Hembra, y de que hoy está mi amo libre, y desvergonzado está siempre.");
+d(1,"Se va.");
+s(1,"REY","Sabed que Mohamed Alefe, habiendo roto la tregua, cercada a Tarifa tiene; y también sé que Alfajá con veinticinco bajeles, surca la mar, y de su furia no se escapan ni los peces. D. Ruy Díaz de Mendoza, aunque valiente defiende a Tarifa, está apretado y es menester socorrerle.");
+s(1,"PEDRO","Yo procuraré en el nombre de vuestra realeza que tiemble el agareno cobarde, al cielo y a vos rebelde.");
+s(1,"REY","Id, Conde de Trastamara.");
+s(1,"PEDRO","Señor, con tantas mercedes, no me faltarán victorias pues ya me sobran laureles.");
+s(1,"REY","Vos, D. Manrique, a Castilla partiréis luego a tenerme nueva gente prevenida, por si necesidad tuviera el Conde.");
+s(1,"MANRIQUE","Siempre mi lealtad y mi sangre a vuestro servicio atienden");
+s(1,"RODRIGO","¡Esta es buena ocasión de que el Rey por vos se empeñe en daros a mi sobrina.");
+s(1,"MANRIQUE","¡Bien decís! Ese Honor concededme, Señor.");
+s(1,"REY","¿Qué queréis?");
+s(1,"MANRIQUE","Que, puesto que me hacéis tantas mercedes, no me neguéis la mayor que mi alma desear puede.");
+s(1,"REY","¿Y cuál es?");
+s(1,"MANRIQUE","Que de Dª Juana de Mendoza, a lograr llegue la dicha de ser su esposo, pues su tío y sus parientes están en ello...");
+s(1,"RODRIGO","Por ser lo que a todos nos conviene.");
+s(1,"REY","Pues por mí, que no quede");
+s(1,"MANRIQUE","Sólo, Señor, me preocupa que de tantos pretendientes, en mi ausencia, la porfía no prospere.");
+s(1,"REY","Para que cese, yo os empeño mi palabra de que sea vuestra solamente, en volviendo de Castilla.");
+s(1,"MANRIQUE","¡Los pies os beso mil veces!");
+s(1,"REY","Dios os lleve con bien. Y vos D. Alonso, mostrad aquí que sois valiente; que con los moros es bueno que vuestro valor se emplee. Y ya que está el Almirante en los brazos de la muerte y no hay quien con mis galeras salga, que están al presente en Cádiz, id en su busca a mandarlas muy fuertes.");
+s(1,"MANCEBÓN","Y también en busca iré de las que el moro trajere;");
+s(1,"REY","Eso y más, de vuestro esfuerzo se puede creer. Id con Dios, y Dios os lleve");
+s(1,"MANCEBÓN","Sí hará, pues vamos a defenderle.");
+d(1,"Se van el Rey, D. Pedro, D. Manrique, D. Rodrigo y el acompañamiento.");
+s(1,"MANCEBÓN","Un rayo verá Alfajá en mis brazos cuando crespen mis galeras las espumas de las aguas transparentes.");
+d(1,"Entra Juana.");
+s(1,"JUANA","Primero la enhorabuena he de daros; no se quede sin que en mi obligación de vuestras dichas se alegre");
+s(1,"MANCEBÓN","Ver vuestros ojos me basta para muchos parabienes");
+s(1,"JUANA","¿Dónde vais?");
+s(1,"MANCEBÓN","A ser del mar rayo que el valor enciende.");
+s(1,"JUANA","Dios os traiga victorioso a las orillas del Betis.");
+s(1,"MANCEBÓN","Llevaros en mi memoria la victoria me previene; que para vencer mil veces, basta teneros presente.");
+s(1,"JUANA","A ser gloria de Castilla con bien los cielos os lleven");
+s(1,"MANCEBÓN","De mi amor en esta ausencia vuestra memoria se acuerde pues sabéis lo que os adoro.");
+s(1,"JUANA","Ya sé lo que mi alma os debe");
+s(1,"MANCEBÓN","Y, habrá modo de pagarme, ya que lo confesáis?");
+s(1,"JUANA","Palabra os doy de ser vuestra cuando vuestra sangre llegue a ser igual que la mía");
+s(1,"MANCEBÓN","Esa esperanza ya realidad me parece");
+s(1,"JUANA","Iros, señor. Que el Rey ya vuelve.");
+s(1,"MANCEBÓN","¡Qué belleza!");
+s(1,"JUANA","¡Qué gallardía!");
+s(1,"MANCEBÓN","¡Qué entendida!");
+s(1,"JUANA","¡Qué valiente!");
+s(1,"MANCEBÓN","¡Adiós, señora!");
+s(1,"JUANA","¡Él os guarde!");
+s(1,"MANCEBÓN","¡Para que os adore siempre!");
+d(1,"Fin de la Jornada Segunda.");
+
+// ══════════ JORNADA 3ª ══════════
+d(2,"Salen Dª Isabel y Rufina.");
+s(2,"RUFINA","Triste con la ausencia estáis de D. Pedro. Creed que pronto victorioso a vuestros ojos volverá.");
+s(2,"ISABEL","La esperanza lo creerá,");
+s(2,"RUFINA","Y del Mancebón… ¿hay nuevas?");
+s(2,"ISABEL","Las mismas que hay del Conde");
+s(2,"RUFINA","Del valor que en él se esconde dará con el moro pruebas");
+s(2,"ISABEL","Mucho pesar le previene la boda de Dª Juana");
+s(2,"RUFINA","En esa esperanza vana ¿qué pierde el que nadie tiene?");
+s(2,"ISABEL","D. Alonso tiernamente de mi prima arde en la llama, y el perder lo que se ama por lo que se ama se siente; así que tres penas padece el dolor de perderla: el no poder merecerla y el ver que otro la merece");
+s(2,"RUFINA","D. Manrique ha negociado, pues dicen que hoy llegará y luego se casará");
+s(2,"ISABEL","Está el Rey tan empeñado con él y con D. Rodrigo, que difícil iba a ser, si no imposible vencer a tan poderoso enemigo, pese al extraño disgusto que Dª Juana ha mostrado. Pero la razón de estado superó a la razón del gusto");
+d(2,"Suenan trompetas. Salen el Rey, D. Rodrigo y acompañamiento.");
+s(2,"ISABEL","Sones de trompetas son. D. Rodrigo, ¿Será D. Pedro?");
+s(2,"RODRIGO","¿Quién puede ser si no es él?");
+d(2,"Suenan salvas.");
+s(2,"REY","Y esta es salva de galeras. (Aparte) ¡Si este día quiere el cielo, por tierra y mar que mi sangre le dé a España dos trofeos!");
+s(2,"REY","(A D. Rodrigo) Salid, a ver si es verdad lo que adivina el deseo.");
+s(2,"RODRIGO","Son D. Pedro y D. Alonso; eso dice la voz del pueblo que en aplausos repetidos hasta aquí nos trae el viento.");
+s(2,"ISABEL","Si es, Rufina, el Conde, salga a recibirle el contento; que hasta que llegue a mis ojos, siempre creeré que está lejos.");
+d(2,"Salen D. Pedro y el Mancebón victoriosos.");
+s(2,"ISABEL","Ven, Rufina");
+s(2,"MANCEBÓN","¡Buen encuentro!");
+s(2,"ISABEL","No es muy bueno, si he de daros la enhorabuena por veros victorioso, juntamente con el pésame del nuevo estado de Dª Juana.");
+s(2,"MANCEBÓN","¡A mí, todo mi aliento!");
+s(2,"RODRIGO","D. Pedro, muy bienvenido seáis.");
+s(2,"PEDRO","Al servicio vuestro");
+s(2,"ISABEL","Al fin; D. Manrique ha sido el más venturoso.");
+s(2,"MANCEBÓN","¡Cielos! ¿De qué sirven las victorias, si la que más importa pierdo?");
+s(2,"RODRIGO","El Rey aguarda.");
+s(2,"ISABEL","Sed cuerdo; que a quien le sobra valor no ha de faltar entendimiento");
+d(2,"Se va.");
+s(2,"PEDRO","Dadme, Señor, vuestros pies.");
+s(2,"REY","Levantad, Conde, del suelo, que ya os esperan mis brazos para coronar con ellos vuestras victorias. ¿Cómo venís?");
+s(2,"PEDRO","¡Victorioso! que es venir dos veces bueno.");
+s(2,"REY","¿Y D. Alonso?");
+s(2,"MANCEBÓN","Besando está vuestros pies");
+s(2,"REY","¿Qué es esto? ¿Qué causa tristeza en vuestro gesto? ¿Qué traéis? ¿Venís vencido?");
+s(2,"MANCEBÓN","¡Vencido y vencedor vengo!");
+s(2,"REY","¿Vencido y vencedor? ¿Cómo? Aclaraos; que no os entiendo.");
+s(2,"MANCEBÓN","Del moro vengo, Señor, vencedor con tanto exceso, que he sido del mar prodigio. Perdonadme lo inmodesto. Y también vengo vencido de otro enemigo que tengo, tan poderoso, que basta para vencer mi sufrimiento;");
+s(2,"REY","Vuestra confusión mi alborozo en duda ha puesto, llevad don Rodrigo la nueva a la Reina");
+s(2,"RODRIGO","A obedeceros voy alegre.");
+d(2,"Se va.");
+s(2,"REY","Ahora, los dos podéis contarme vuestros trofeos pues podrán las circunstancias hacer mayor el contento.");
+s(2,"PEDRO","A D. Alonso, Señor, le toca hablar primero, por ser su valor la causa de tan felices sucesos");
+s(2,"REY","Decid pues");
+s(2,"MANCEBÓN","Escuchad atento. Salí, Señor, de Cádiz con bonanza, a cuarteles cortando del mar la espuma, mis soldados poblaron nuestra arena de despojos, y por mi acero honrada España; sin dejar de la gente sarracena nadie que cuente en África mi hazaña, y dando a todo triunfo, honor y gloria... ¡Sólo yo me he quedado sin victoria!");
+s(2,"REY","No se cuenta mayor triunfo de romanos ni de griegos. Y a vos ¿cómo os fue en Tarifa?");
+s(2,"PEDRO","Al fin, dentro de Jimena, temeroso de mi acero, treguas, Señor, por diez años, Mohamed juró de nuevo, ofreciendo en cada uno doce mil doblas por deudo y dando a vuestros pies humilde lo que les negó soberbio.");
+s(2,"REY","Llegad los dos a mis brazos y descansaré en los vuestros pues sois valientes columnas de mi castellano imperio.");
+s(2,"PEDRO","A vuestros invictos pies");
+s(2,"MANCEBÓN","Mayor firmeza tendremos");
+s(2,"REY","(A D. Pedro) Levantad, Duque de Arjona");
+s(2,"PEDRO","No podré con tanto peso; que es muy grande ese honor.");
+s(2,"REY","(Dirigiéndose al Mancebón) Y vos...");
+s(2,"MANCEBÓN","Suspended el premio; que están de más los favores en quien tiene el alma menos. Piérdase con mi esperanza conseguirlo y merecerlo; porque no parecen dichas las que no logra el deseo. Y dadme sólo licencia para que en las soledades se explaye el mal que padezco, que está delante de vos, oprimido por el respeto, y por no salir afuera, podrá reventar adentro.");
+s(2,"REY","¿Qué tenéis?");
+s(2,"MANCEBÓN","Lo que no tengo");
+s(2,"REY","¿De lo que no tenéis nace vuestro mal?");
+s(2,"MANCEBÓN","Con razón, puesto que todo el gusto me quita; y, como sin él me veo, de lo que no tengo es, Señor, de lo que me quejo.");
+s(2,"REY","(Hablando con D. Pedro) ¿Qué será? Que me da pena por lo mucho que le quiero, verle tan desconsolado.");
+s(2,"PEDRO","Señor, a lo que yo entiendo, la boda de Dª Juana de Mendoza estos despechos le ocasiona; que en quien ama, tienen gran poder los celos.");
+s(2,"REY","Mucho me pesa; que ya eso no tiene remedio; pero en las mercedes mías hallará su mal consuelo... ¡Sobrino, nada os dé pena estando yo de por medio!");
+s(2,"MANCEBÓN","¿Con quién habláis?");
+s(2,"REY","¡Con vos hablé!");
+s(2,"MANCEBÓN","Pues..., ¿soy yo sobrino vuestro?");
+s(2,"REY","Vos sois hijo de mi hermano y primo sois de D. Pedro; ved si seréis mi sobrino.");
+s(2,"MANCEBÓN","¿Ahora salís con eso? ¿Por qué no lo dijisteis antes de perder el bien que pierdo? ¡Maldita sea la fortuna, que el mal y el bien me dio a un tiempo!");
+s(2,"REY","En las heroicas hazañas de vuestro invencible pecho, acreditada la sangre está de tan ínclitos abuelos. Y ya que sabéis que sois mi sobrino, los desvelos de vuestra pasión templad");
+s(2,"PEDRO","Siempre de este parentesco fue el corazón adivino");
+s(2,"MANCEBÓN","Perdonadme, si grosero, Señor, llevar me he dejado de mis locos pensamientos a la vista de tantas honras.");
+s(2,"REY","Alzad, sobrino, del suelo; que ahora falta premiar vuestro valor.");
+s(2,"MANCEBÓN","Cuando vengo a saber que sois mi tío todo lo demás es menos.");
+s(2,"REY","Ya que el Almirante ha muerto, Almirante de Castilla os hago.");
+s(2,"MANCEBÓN","Los pies os beso, otra vez.");
+s(2,"PEDRO","Y yo, puesto tanto en este favor granjeo..."),
+s(2,"REY","Quiero ver si de esta suerte teneros gustoso puedo.");
+s(2,"MANCEBÓN","Señor, conforme a razón, ¿no habría modo de estorbar, ya que no se ha llevado a efecto, esa boda?");
+s(2,"REY","Eso es imposible; pues D. Manrique es mi deudo.");
+s(2,"MANCEBÓN","¡Primero me dio la palabra de ser mía!");
+s(2,"REY","¿Cómo?");
+s(2,"MANCEBÓN","Siendo su igual; y ya que lo soy no he de perder el derecho que tengo a su blanca mano.");
+s(2,"REY","Es mi palabra primero. ¡No os faltarán casamientos a vos, siendo mi sobrino!");
+s(2,"MANCEBÓN","Así dejaré de serlo; pues sin Dª Juana, ya morir solamente quiero.");
+s(2,"REY","¡Esperad!");
+s(2,"MANCEBÓN","Ya mi esperanza ha dado fin... ¡a morirme de celos!");
+d(2,"Se va.");
+s(2,"PEDRO","¡Notable extremo de amor!");
+s(2,"REY","Duque, seguidle, que temo su resolución amante.");
+s(2,"PEDRO","No hay ningún celoso cuerdo.");
+s(2,"REY","Solo su disgusto pudo aguar todo mi contento.");
+d(2,"Se van. Sale Racimo.");
+s(2,"RACIMO","¡Gracias a Dios, Sevilla, que he pisado tu Arenal y estoy en tu Alcázar Real, que hoy es gloria de Castilla! ¡Gracias a Dios, que me he hallado sin el iza y sin el boga, que para el soldado es soga y palo para el forzado! Racimo, no más galeras, que aunque soy hombre cabal, he llegado a querer mal hasta las que van a la era. No más mar, que es Dios testigo de que tengo incluso en agosto como Racimo de buen mosto, el agua por enemigo. Las marítimas campañas otros la vayan a librar, porque eso de navegar me hace echar las entrañas... De la Reina al cuarto he entrado sin hallar estorbo en nada, porque no hay puerta cerrada para un valiente soldado... Pero..., ¿encontraré por aquí a mi amo?... ¡Hola! ¿No es la que sale allí? ¡Vive Dios que es una aurora de la cabeza a los pies!");
+d(2,"Salen Juana y Rufina.");
+s(2,"RUFINA","D. Alonso Enríquez es sobrino del Rey, señora");
+s(2,"JUANA","¿Qué dices?");
+s(2,"RUFINA","Y es el más querido");
+s(2,"JUANA","(Aparte) ¡A buena hora lo he sabido!");
+s(2,"RUFINA","Y Almirante de Castilla cuando menos");
+s(2,"JUANA","Su valor, por su noble bizarría, era luz que descubría su generoso esplendor.");
+s(2,"RUFINA","No hay en él término medio.");
+s(2,"JUANA","Ni en mi desgracia importuna; cosas son de mi fortuna que ya no tienen remedio.");
+s(2,"RACIMO","Mi humilde boca estampar en vuestro chapín quisiera, como corcho con que se pudiera el mejor frasco tapar.");
+s(2,"JUANA","¿Quién es?");
+s(2,"RACIMO","Injerto en soldado un Racimo pecador, que antes de vuestro favor solía estar más beneficiado.");
+s(2,"JUANA","Seas Racimo, bien venido");
+s(2,"RACIMO","¿A secas, sin preguntarme ninguna cosa, ni darme encargo de llevar a mi amo?");
+s(2,"JUANA","Corren ya otros tiempos");
+s(2,"RACIMO","Ya que todo está cambiado, en buena razón, Rufina, en el Arenal conmigo has de estar muy fina, pues, también tú habrás mudado.");
+s(2,"RUFINA","A ese barrio no me mudo; que es de gente chabacana");
+s(2,"RACIMO","Suspende el rigor, que ya estoy muerto de amor.");
+s(2,"RUFINA","Pues, el demonio te lleve.");
+d(2,"Se va.");
+s(2,"RACIMO","Si a las buenas te obligo en vano, en la primera ocasión te obligará el pescozón que tuviere más a mano.");
+d(2,"Se va.");
+s(2,"JUANA","¡Que es D. Alonso sobrino del Rey y que yo lo sepa tan tarde! ¡Que de su ventura solo me alcance la nueva, cuando está mi libertad tiranamente sujeta al yugo de otra yunta que enlaza menos que pesa! Mas ya no es tiempo de hablar de esta materia, y, ya que de otro dueño soy el escrúpulo no crea que de su atención se olvida la que de otro amor se acuerda; mi malograda esperanza con mi cuidado fin tenga, y acábese la memoria porque a ser olvido vuelva... Que ya es hora de que mi locura se me convierta en prudencia para no mirar ...");
+d(2,"Al salir, entra el Mancebón.");
+s(2,"MANCEBÓN","¿De quién viene huyendo tu belleza?");
+s(2,"JUANA","De mí y de vos. (Aparte) Mas, ¿qué digo? ¿Qué he de decir si estoy muerta? ¡Que propio es de los que huyen encontrar el riesgo más cerca!");
+s(2,"MANCEBÓN","(Aparte) Disimulemos pesares por ver si el ruego aprovecha; que aun hasta los imposibles, la ciega esperanza llega. (A Dª Juana) Cuando mi firme cuidado viene alegre a darte cuenta de que soy del Rey sobrino, haciéndome su grandeza Almirante de Castilla, cargo tan ilustre en ella, por lo que vengo a ser tu igual en estado y en nobleza..., ¿tan fuera de ti te halla quien dentro de ti te espera?");
+s(2,"JUANA","Ya sé todas vuestras dichas.");
+s(2,"MANCEBÓN","Falta lo que más desea el alma; falta tu mano para que en mi amorosa guerra bandera de paz tremole al aire cinco azucenas");
+s(2,"JUANA","Marchitólas mi desdicha, pero mal dije, la vuestra; por lo que ya será imposible lograrla.");
+s(2,"MANCEBÓN","¿Por qué?");
+s(2,"JUANA","Porque ya es ajena");
+s(2,"MANCEBÓN","¿Ajena? Y, entonces la palabra que tú me diste..., ¿en defensa no quedó de mi ventura?");
+s(2,"JUANA","Era aire, y voló a su esfera");
+s(2,"MANCEBÓN","¿De un ángel pesan tan poco que son viento las promesas?");
+d(2,"Salen por un lado D. Pedro y por otro D. Rodrigo, ambos se quedan al paño.");
+s(2,"PEDRO","A buscar al Almirante vengo, porque el Rey lo ordena.");
+s(2,"RODRIGO","Decir quiero a mi sobrina que ya su esposo está cerca.");
+s(2,"PEDRO","¡Con Dª Juana está hablando! ¡Lo que he visto me pesa!");
+s(2,"PEDRO","Escucharé lo que intenta");
+s(2,"MANCEBÓN","¡Que a pesar de mi ventura mi desdicha te venza!");
+s(2,"JUANA","¡Donde hay fuerza no hay razón!");
+s(2,"MANCEBÓN","¡No hay casamiento, si hay fuerza!");
+s(2,"JUANA","Sí hay, que nunca la declaran las mujeres de mis prendas. Ya D. Manrique es dueño.");
+s(2,"MANCEBÓN","Calla pues, basta de ofensas. Pensé yo que tu palabra era roca al mar expuesta, no caña, que a cualquier soplo porque se dobla, se quiebra. ¡Mal haya la voluntad que vanamente se emplea en tan mudable hermosura para ser dos veces ciega! Y ¡mal haya yo mil veces que, rendido a tu belleza, le quise entregar el alma a quien la vida me niega!");
+s(2,"JUANA","D. Alonso, aunque no es tiempo de hablar de cosas como éstas, no he de dejar que me injuries sin que defenderme quiera: Las mujeres como yo, que a su condición se sujetan, por la razón de su estado la voluntad atropellan, por no correr murmuradas el riesgo de desatentas. De mis deudos persuadida, dudosa de tu nobleza, a tu cariño vetada, ya que en mi noble altivez era, por no ser tú conocido, de mi presunción ofensa, y lo que es más, obligada de un Rey, a cuya dependencia, con no estar sujeta el alma, se debe ciega obediencia, y que para nuestro daño por D. Manrique se empeña, tanto, que hizo consentimiento de lo que fue resistencia, por lo que hube de elegirle por esposo...");
+s(2,"MANCEBÓN","Aguarda, espera");
+s(2,"JUANA","…sin valerme");
+s(2,"MANCEBÓN","No prosigas; y ya que tu amor confiesas, válgame aquí mi osadía, de ella me intento valer.");
+s(2,"JUANA","Y, con eso, ¿qué remedias estando yo en este estado?");
+s(2,"MANCEBÓN","Si yo hallara algún camino para que a ser mía vuelvas, superándolo todo con valor y con firmeza, ¿vendrías en ello?");
+s(2,"JUANA","¡Ya, no es posible!");
+s(2,"MANCEBÓN","¿Y si lo fuera?");
+s(2,"JUANA","Si lo fuera...");
+s(2,"MANCEBÓN","¿Qué dices?");
+s(2,"JUANA","Dudosa estoy; pero si acaso... hallares forma de impedir mi boda, inténtalo en buena hora");
+s(2,"MANCEBÓN","Pues en fe de tu marido, ¿consentirías la violencia de una ofensa, pues es solo el remedio que nos queda?");
+s(2,"JUANA","Como yo logre el ser tuya sin que mi honor lo padezca, lisonja será del gusto");
+s(2,"MANCEBÓN","Mira bien...");
+s(2,"JUANA","¡Ya estoy resuelta!");
+s(2,"MANCEBÓN","Mira que ha de ser...");
+s(2,"JUANA","¡Nada me asombra!");
+s(2,"MANCEBÓN","...muy violento");
+s(2,"JUANA","Eso me alienta; pues con fuertes medicinas se curan graves dolencias.");
+d(2,"Salen D. Rodrigo y D. Manrique y ven a El Mancebón y Dª Juana.");
+s(2,"MANCEBÓN","¡Valor! La ocasión es esta");
+d(2,"SE COMEN LA BOCA.");
+s(2,"MANRIQUE","¡A qué mala hora llegamos!");
+s(2,"JUANA","¡Quién tan gran traición creyera! ¿No hay quien defienda mi honor?");
+s(2,"MANRIQUE","(Sacando la espada) ¡Muchos hay que te defiendan!");
+s(2,"RODRIGO","¡Y con su muerte!");
+d(2,"Salen el Rey y todos.");
+s(2,"REY","¿Qué es esto?");
+s(2,"RODRIGO","La injuria, Señor, más nueva que en noble sangre jamás ejecutó la soberbia");
+s(2,"MANRIQUE","El mayor atrevimiento que de ser humano se cuenta.");
+s(2,"JUANA","Y en el papel de mis labios escrito, Señor, se muestra, por boca de D. Alonso, para aumentar mi vergüenza.");
+s(2,"REY","Siempre recelé gran daño de su enojo y de su pena.");
+s(2,"PEDRO","¡Extraña resolución!");
+s(2,"ISABEL","¡Que osadía tan grosera!");
+s(2,"RODRIGO","Para vengar este agravio, ¡campo pido a vuestra alteza!");
+s(2,"MANRIQUE","Solamente a mí me toca el castigar esta ofensa");
+s(2,"RODRIGO","En mi sangre fue la injuria");
+s(2,"MANRIQUE","Ya esa corre por mi cuenta.");
+s(2,"RODRIGO","De mi antiguo timbre es mancha.");
+s(2,"MANRIQUE","De mi nuevo empeño es deuda");
+s(2,"MANCEBÓN","O arreglaos, o salid entrambos; y si hay más, vengan.");
+s(2,"PEDRO","¡Mi espada está a vuestro lado!");
+s(2,"MANCEBÓN","¡Basta la mía, no la vuestra!");
+s(2,"REY","¡Notable empeño!");
+s(2,"JUANA","Señor, ociosa es la competencia: mi tío podría vengar su enojo, mas no mi queja; D. Manrique aun no es mi dueño, ni ya es justo que lo sea; que no es bueno en un marido empezar sufriendo una afrenta. Por mi mano solamente he de quedar satisfecha, vengándome yo a mí misma, pues las demás no me vengan. Así que, Señor ...");
+s(2,"REY","¡Veamos, cómo satisfaceros intentáis!");
+s(2,"JUANA","De esta manera: dando la mano de esposa sagaz, advertida y cuerda a quien puso la boca en mis labios, pues no hay otra recompensa. Y, si hay duda en la opinión quédese en casa la ofensa");
+s(2,"REY","Buscad otro medio pues mi palabra está interpuesta en que seáis de D. Manrique");
+s(2,"MANRIQUE","Yo ya no siento el perderla, Señor, con lo que ha pasado");
+s(2,"REY","Pues, siendo de esa manera, yo ya del empeño salgo, para que la dicha doble sea. Dª Isabel dé a D. Pedro la mano");
+s(2,"ISABEL","¡Y el alma en ella!");
+s(2,"PEDRO","¡La gloria es de mi esperanza!");
+s(2,"MANCEBÓN","Aunque no de buena gana me salió bien la jugada");
+s(2,"RACIMO","¡Rufina!");
+s(2,"RUFINA","¿Qué quieres, bestia?");
+s(2,"RACIMO","Darte veinte besos, para que casarte quieras.");
+s(2,"RUFINA","¡De buen grado me caso!");
+s(2,"RACIMO","Pues, dé aquí fin la comedia de “Ofender para obligar” cuyo relato entretenido a vuestro aplauso dedican quienes más serviros desean. Aunque otras lenguas con más tino proclamen que el cuento es con razón la verdadera historia de un muchacho que en las Palacios llamaban el Mancebón");
+d(2,"FIN.");
+
+// ══════════════════════════════════════════════
+//  ESTADO
+// ══════════════════════════════════════════════
+let currentJornada = 0;
+let studyMode = 'context';
+let hideMyLines = true;
+let quizItems = [], quizIndex = 0, quizRevealed = false;
+
+// ══════════════════════════════════════════════
+//  UTILIDADES
+// ══════════════════════════════════════════════
+function getPersonaje(id) { return charMap[id] || { corto: id, icon: '👤', actor: '' }; }
+
+function lineCounts() {
+  const counts = {};
+  PERSONAJES.forEach(p => { counts[p.id] = 0; });
+  SCRIPT.forEach(e => {
+    if (e.type === 'speech') {
+      if (!counts[e.speaker]) counts[e.speaker] = 0;
+      counts[e.speaker]++;
+    }
+  });
+  return counts;
+}
+
+function highlight(text, query) {
+  if (!query) return text;
+  const re = new RegExp('(' + query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+  return text.replace(re, '<mark>$1</mark>');
+}
+
+// ══════════════════════════════════════════════
+//  PORTADA ↔ APP
+// ══════════════════════════════════════════════
+function startApp() {
+  document.getElementById('portada').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  initApp();
+}
+function backToPortada() {
+  document.getElementById('portada').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function initApp() {
+  populateCharSelects();
+  buildJornadaNav();
+  renderScript();
+  buildPersonajesGrid();
+  renderStudy();
+  renderStats();
+}
+
+// ══════════════════════════════════════════════
+//  SELECTS
+// ══════════════════════════════════════════════
+function populateCharSelects() {
+  const counts = lineCounts();
+  const opts = PERSONAJES.filter(p => (counts[p.id] || 0) > 0)
+    .sort((a,b) => (counts[b.id]||0) - (counts[a.id]||0));
+
+  ['highlight-char','study-char','prom-char','quiz-char','grab-char'].forEach(id => {
+    const sel = document.getElementById(id);
+    if (!sel) return;
+    const keep = sel.options[0];
+    while (sel.options.length > 1) sel.remove(1);
+    opts.forEach(p => {
+      const o = document.createElement('option');
+      o.value = p.id;
+      o.textContent = `${p.icon} ${p.corto} (${counts[p.id]} intervenciones)`;
+      sel.appendChild(o);
+    });
+  });
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: OBRA
+// ══════════════════════════════════════════════
+function buildJornadaNav() {
+  const nav = document.getElementById('jornada-nav');
+  nav.innerHTML = '';
+  PLAY.jornadas.forEach((j, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'jornada-btn' + (i === currentJornada ? ' active' : '');
+    btn.textContent = j;
+    btn.onclick = () => { currentJornada = i; updateJornadaBtns(); renderScript(); };
+    nav.appendChild(btn);
+  });
+}
+
+function updateJornadaBtns() {
+  document.querySelectorAll('.jornada-btn').forEach((b, i) => {
+    b.classList.toggle('active', i === currentJornada);
+  });
+}
+
+function renderScript() {
+  const container = document.getElementById('script-display');
+  const hlChar = document.getElementById('highlight-char').value;
+  const dim = document.getElementById('dim-others').checked;
+  const lines = SCRIPT.filter(e => e.jornada === currentJornada);
+
+  let html = `<h2 style="font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:var(--red);margin-bottom:1.2rem;border-bottom:1px solid var(--parch3);padding-bottom:0.5rem;">${PLAY.jornadas[currentJornada]}</h2>`;
+
+  lines.forEach(entry => {
+    if (entry.type === 'dir') {
+      html += `<div class="stage-dir">${entry.text}</div>`;
+    } else {
+      const isMine = hlChar && entry.speaker === hlChar;
+      const cls = hlChar ? (isMine ? 'speech highlighted' : (dim ? 'speech other-char' : 'speech')) : 'speech';
+      const p = getPersonaje(entry.speaker);
+      html += `<div class="${cls}">
+        <span class="speaker-name">${p.corto}:</span>
+        <div class="speech-text">${entry.text}</div>
+      </div>`;
+    }
+  });
+
+  container.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: PERSONAJES
+// ══════════════════════════════════════════════
+function buildPersonajesGrid() {
+  const counts = lineCounts();
+  const grid = document.getElementById('personajes-grid');
+  grid.innerHTML = '';
+  PERSONAJES.forEach(p => {
+    const n = counts[p.id] || 0;
+    if (n === 0 && p.id !== 'VOCES') return;
+    const card = document.createElement('div');
+    card.className = 'personaje-card';
+    card.innerHTML = `<span class="char-icon">${p.icon}</span>
+      <div class="char-name">${p.corto}</div>
+      <div class="char-actor">${p.actor}</div>
+      <div class="char-lines">${n} intervenciones</div>`;
+    card.onclick = () => showCharDetail(p, counts[p.id] || 0);
+    grid.appendChild(card);
+  });
+}
+
+function showCharDetail(p, count) {
+  document.querySelectorAll('.personaje-card').forEach(c => c.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+
+  const jornCounts = [0,1,2].map(j =>
+    SCRIPT.filter(e => e.type==='speech' && e.speaker===p.id && e.jornada===j).length
+  );
+  const scenes = new Set(SCRIPT.filter(e => e.type==='speech' && e.speaker===p.id).map(e => e.jornada));
+
+  document.getElementById('char-detail').innerHTML = `
+    <div class="char-stats">
+      <h3>${p.icon} ${p.nombre}</h3>
+      <div class="stat-row">
+        <span class="stat-pill">🎭 Intérprete: ${p.actor}</span>
+        <span class="stat-pill">💬 ${count} intervenciones totales</span>
+        <span class="stat-pill">🎬 ${scenes.size} jornada(s)</span>
+      </div>
+      <div class="stat-row">
+        ${[0,1,2].map((j,i) => jornCounts[i] > 0 ? `<span class="stat-pill">${PLAY.jornadas[i]}: ${jornCounts[i]} líneas</span>` : '').join('')}
+      </div>
+      <div style="margin-top:0.8rem;">
+        <button class="prom-btn" onclick="goStudy('${p.id}')" style="font-size:0.85rem;">
+          📖 Estudiar texto de ${p.corto}
+        </button>
+        <button class="prom-btn" onclick="goPrompter('${p.id}')" style="font-size:0.85rem;margin-left:0.5rem;">
+          🎬 Prompter para ${p.corto}
+        </button>
+      </div>
+    </div>`;
+}
+
+function goStudy(charId) {
+  document.getElementById('study-char').value = charId;
+  renderStudy();
+  showPanel('estudio');
+}
+function goPrompter(charId) {
+  document.getElementById('prom-char').value = charId;
+  showPanel('prompter');
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: ESTUDIO
+// ══════════════════════════════════════════════
+function toggleStudy(mode) {
+  studyMode = mode;
+  document.getElementById('tb-context').classList.toggle('active', mode==='context');
+  document.getElementById('tb-solo').classList.toggle('active', mode==='solo');
+  renderStudy();
+}
+
+function renderStudy() {
+  const charId = document.getElementById('study-char').value;
+  const jornadaVal = document.getElementById('study-jornada').value;
+  const container = document.getElementById('study-display');
+
+  if (!charId) {
+    container.innerHTML = '<div class="empty-state">Elige tu personaje arriba para ver tu texto</div>';
+    return;
+  }
+
+  const p = getPersonaje(charId);
+  const jornadaFilter = jornadaVal === 'all' ? null : parseInt(jornadaVal);
+  const lines = SCRIPT.filter(e => {
+    if (jornadaFilter !== null && e.jornada !== jornadaFilter) return false;
+    if (studyMode === 'solo') return e.type === 'speech' && e.speaker === charId;
+    return true;
+  });
+
+  let html = '';
+  let jornadaShown = -1;
+
+  lines.forEach(entry => {
+    if (entry.jornada !== jornadaShown) {
+      jornadaShown = entry.jornada;
+      html += `<div style="font-family:'Playfair Display',serif;font-style:italic;color:var(--red);font-size:1.1rem;margin:1.2rem 0 0.5rem;border-bottom:1px solid #ddd;padding-bottom:0.3rem;">${PLAY.jornadas[entry.jornada]}</div>`;
+    }
+    if (entry.type === 'dir') {
+      if (studyMode !== 'solo') html += `<div class="stage-dir">${entry.text}</div>`;
+    } else {
+      const isMe = entry.speaker === charId;
+      const ep = getPersonaje(entry.speaker);
+      html += `<div class="study-line ${isMe ? 'my-line' : 'other-line'}">
+        <div class="line-speaker">${ep.corto}</div>
+        <div class="line-text">${entry.text}</div>
+      </div>`;
+    }
+  });
+
+  if (!html) html = '<div class="empty-state">No hay líneas para esta selección</div>';
+  container.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: PROMPTER
+// ══════════════════════════════════════════════
+function toggleHide() {
+  hideMyLines = !hideMyLines;
+  const btn = document.getElementById('btn-hide-mine');
+  btn.classList.toggle('active', hideMyLines);
+  btn.textContent = hideMyLines ? '🙈 Ocultar mis líneas' : '👁️ Mostrar mis líneas';
+}
+
+function renderPrompter() {
+  const charId = document.getElementById('prom-char').value;
+  const jornadaVal = document.getElementById('prom-jornada').value;
+  const container = document.getElementById('prompter-display');
+
+  if (!charId) { container.innerHTML = '<p style="color:#666;font-style:italic;text-align:center;padding:3rem;">Elige un personaje primero</p>'; return; }
+
+  const jornadaFilter = jornadaVal === 'all' ? null : parseInt(jornadaVal);
+  const lines = SCRIPT.filter(e => jornadaFilter === null || e.jornada === jornadaFilter);
+
+  let html = '';
+  let jornadaShown = -1;
+
+  lines.forEach(entry => {
+    if (entry.jornada !== jornadaShown) {
+      jornadaShown = entry.jornada;
+      html += `<div style="color:var(--gold2);font-family:'Playfair Display',serif;font-style:italic;font-size:0.9rem;margin:1.5rem 0 0.5rem;border-bottom:1px solid rgba(184,134,11,0.3);padding-bottom:0.3rem;">${PLAY.jornadas[entry.jornada]}</div>`;
+    }
+    if (entry.type === 'dir') {
+      html += `<div class="prompter-line p-stagedir"><span class="p-text">${entry.text}</span></div>`;
+    } else {
+      const isMe = entry.speaker === charId;
+      const ep = getPersonaje(entry.speaker);
+      const hiddenClass = (isMe && hideMyLines) ? 'hidden-text' : '';
+      html += `<div class="prompter-line ${isMe ? 'p-mine' : ''} ${hiddenClass}">
+        <span class="p-speaker">${ep.corto}: </span><span class="p-text">${entry.text}</span>
+      </div>`;
+    }
+  });
+
+  container.innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: REPASO
+// ══════════════════════════════════════════════
+function loadQuiz() {
+  const charId = document.getElementById('quiz-char').value;
+  const jornadaVal = document.getElementById('quiz-jornada').value;
+  if (!charId) {
+    document.getElementById('quiz-card').innerHTML = '<p style="color:#666;font-style:italic;">Elige un personaje para empezar el repaso</p>';
+    document.getElementById('quiz-progress').textContent = '';
+    return;
+  }
+  const jornadaFilter = jornadaVal === 'all' ? null : parseInt(jornadaVal);
+
+  // Build quiz: for each of my speeches, show the preceding line as cue
+  quizItems = [];
+  const lines = SCRIPT.filter(e => jornadaFilter === null || e.jornada === jornadaFilter);
+  lines.forEach((entry, idx) => {
+    if (entry.type === 'speech' && entry.speaker === charId) {
+      let cue = '';
+      for (let i = idx - 1; i >= 0; i--) {
+        if (lines[i].type === 'speech' && lines[i].speaker !== charId) {
+          cue = `${getPersonaje(lines[i].speaker).corto}: "${lines[i].text}"`;
+          break;
+        } else if (lines[i].type === 'dir') {
+          cue = `(Acotación: ${lines[i].text})`;
+          break;
+        }
+      }
+      quizItems.push({
+        jornada: entry.jornada,
+        cue: cue || '(Inicio de escena)',
+        answer: entry.text,
+        speaker: entry.speaker
+      });
+    }
+  });
+
+  quizIndex = 0;
+  quizRevealed = false;
+  renderQuizCard();
+}
+
+function shuffleQuiz() {
+  for (let i = quizItems.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [quizItems[i], quizItems[j]] = [quizItems[j], quizItems[i]];
+  }
+  quizIndex = 0; quizRevealed = false;
+  renderQuizCard();
+}
+
+function renderQuizCard() {
+  const prog = document.getElementById('quiz-progress');
+  const card = document.getElementById('quiz-card');
+  if (quizItems.length === 0) {
+    card.innerHTML = '<p style="color:#666;font-style:italic;">No hay líneas para esta selección</p>';
+    prog.textContent = '';
+    return;
+  }
+  prog.textContent = `Tarjeta ${quizIndex + 1} de ${quizItems.length}`;
+  const item = quizItems[quizIndex];
+  const p = getPersonaje(item.speaker);
+  card.innerHTML = `
+    <div class="quiz-cue">Tras escuchar:</div>
+    <div class="quiz-prompt">${item.cue}</div>
+    <div class="quiz-cue">¿Qué dice <strong>${p.corto}</strong>? — ${PLAY.jornadas[item.jornada]}</div>
+    <button class="quiz-reveal-btn" onclick="revealQuiz()">Revelar mi línea</button>
+    <div class="quiz-answer" id="quiz-ans">${item.answer}</div>
+    <div class="quiz-nav">
+      <button class="prom-btn" onclick="prevQuiz()">← Anterior</button>
+      <button class="prom-btn" onclick="nextQuiz()">Siguiente →</button>
+    </div>`;
+}
+
+function revealQuiz() {
+  const ans = document.getElementById('quiz-ans');
+  if (ans) { ans.style.display = 'block'; }
+}
+function nextQuiz() {
+  quizIndex = (quizIndex + 1) % quizItems.length;
+  renderQuizCard();
+}
+function prevQuiz() {
+  quizIndex = (quizIndex - 1 + quizItems.length) % quizItems.length;
+  renderQuizCard();
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: BÚSQUEDA
+// ══════════════════════════════════════════════
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  const container = document.getElementById('search-results');
+  if (q.length < 2) { container.innerHTML = '<p style="color:#888;font-style:italic;">Escribe al menos 2 caracteres...</p>'; return; }
+
+  const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+  const results = SCRIPT.filter(e => re.test(e.text));
+
+  if (results.length === 0) {
+    container.innerHTML = `<div class="empty-state">No se encontró "${q}" en el texto</div>`;
+    return;
+  }
+
+  let html = `<p style="font-size:0.85rem;color:#888;margin-bottom:0.8rem;font-style:italic;">${results.length} resultado(s) encontrado(s)</p>`;
+  results.forEach(entry => {
+    const loc = `${PLAY.jornadas[entry.jornada]}`;
+    if (entry.type === 'dir') {
+      html += `<div class="search-result">
+        <div class="res-loc">📜 ${loc} — Acotación</div>
+        <div class="res-text">${highlight(entry.text, q)}</div>
+      </div>`;
+    } else {
+      const p = getPersonaje(entry.speaker);
+      html += `<div class="search-result" onclick="goToLine(${SCRIPT.indexOf(entry)})">
+        <div class="res-loc">📖 ${loc}</div>
+        <span class="res-speaker">${p.icon} ${p.corto}:</span>
+        <span class="res-text"> ${highlight(entry.text, q)}</span>
+      </div>`;
+    }
+  });
+
+  container.innerHTML = html;
+}
+
+function goToLine(idx) {
+  const entry = SCRIPT[idx];
+  currentJornada = entry.jornada;
+  showPanel('obra');
+  updateJornadaBtns();
+  setTimeout(() => { renderScript(); }, 100);
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: ESTADÍSTICAS
+// ══════════════════════════════════════════════
+function renderStats() {
+  const counts = lineCounts();
+  const totalLines = SCRIPT.filter(e => e.type === 'speech').length;
+  const sorted = Object.entries(counts).filter(([,v]) => v > 0).sort((a,b) => b[1]-a[1]);
+  const max = sorted[0]?.[1] || 1;
+
+  const jornCounts = [0,1,2].map(j => SCRIPT.filter(e => e.type==='speech' && e.jornada===j).length);
+  const dirCounts = [0,1,2].map(j => SCRIPT.filter(e => e.type==='dir' && e.jornada===j).length);
+
+  let html = `
+  <div class="summary-section">
+    <h3>📊 Datos Generales</h3>
+    <div class="stat-row">
+      <span class="stat-pill">📝 ${totalLines} intervenciones totales</span>
+      <span class="stat-pill">🎭 ${sorted.length} personajes con texto</span>
+      <span class="stat-pill">🎬 3 Jornadas</span>
+      <span class="stat-pill">🎪 ${SCRIPT.filter(e=>e.type==='dir').length} acotaciones</span>
+    </div>
+    <div class="stat-row" style="margin-top:0.6rem;">
+      ${jornCounts.map((n,i) => `<span class="stat-pill">${PLAY.jornadas[i]}: ${n} intervenciones · ${dirCounts[i]} acotaciones</span>`).join('')}
+    </div>
+  </div>
+
+  <div class="summary-section">
+    <h3>💬 Intervenciones por Personaje</h3>
+    ${sorted.map(([id, count]) => {
+      const p = getPersonaje(id);
+      const pct = Math.round((count / max) * 100);
+      return `<div class="char-line-bar">
+        <div class="bar-name">${p.icon} ${p.corto}</div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <div class="bar-count">${count}</div>
+      </div>`;
+    }).join('')}
+  </div>
+
+  <div class="summary-section">
+    <h3>🎭 Presencia por Jornada</h3>
+    <div style="overflow-x:auto;">
+      <table style="width:100%;border-collapse:collapse;font-size:0.85rem;">
+        <thead>
+          <tr>
+            <th style="text-align:left;padding:0.5rem;color:var(--gold2);border-bottom:1px solid rgba(184,134,11,0.3);">Personaje</th>
+            ${PLAY.jornadas.map(j => `<th style="text-align:center;padding:0.5rem;color:var(--gold2);border-bottom:1px solid rgba(184,134,11,0.3);">${j.replace('Jornada ','J.')}</th>`).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${sorted.map(([id]) => {
+            const p = getPersonaje(id);
+            const jc = [0,1,2].map(j => SCRIPT.filter(e=>e.type==='speech'&&e.speaker===id&&e.jornada===j).length);
+            return `<tr>
+              <td style="padding:0.4rem 0.5rem;color:var(--parch2);">${p.icon} ${p.corto}</td>
+              ${jc.map(n => `<td style="text-align:center;padding:0.4rem;color:${n>0?'var(--gold)':'#444'};">${n>0?n:'—'}</td>`).join('')}
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+
+  document.getElementById('stats-display').innerHTML = html;
+}
+
+// ══════════════════════════════════════════════
+//  NAVEGACIÓN
+// ══════════════════════════════════════════════
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  const tabs = ['obra','personajes','estudio','prompter','repaso','grabacion','buscar','resumen'];
+  const idx = tabs.indexOf(name);
+  if (idx >= 0) document.querySelectorAll('.nav-tab')[idx].classList.add('active');
+}
+
+// ══════════════════════════════════════════════
+//  PANEL: GRABACIÓN
+// ══════════════════════════════════════════════
+let grabScenes = [];
+let grabSceneIdx = 0;
+let mediaRecorder = null;
+let audioChunks = [];
+let recTimerInterval = null;
+let recSeconds = 0;
+let analyserNode = null;
+let animFrameId = null;
+let recordings = JSON.parse(localStorage.getItem('teatro_recordings') || '[]');
+
+function loadGrabScene() {
+  const charId = document.getElementById('grab-char').value;
+  const jornadaVal = document.getElementById('grab-jornada').value;
+  grabScenes = [];
+
+  if (!charId) {
+    document.getElementById('grab-scene-text').innerHTML = '<p style="color:#888;font-style:italic;text-align:center;padding:2rem;">Elige tu personaje para ver las escenas</p>';
+    document.getElementById('grab-scene-num').textContent = '—';
+    return;
+  }
+
+  const jornadaFilter = jornadaVal === 'all' ? null : parseInt(jornadaVal);
+  const lines = SCRIPT.filter(e => jornadaFilter === null || e.jornada === jornadaFilter);
+
+  // Group into scenes: each of MY speeches + some context
+  let currentScene = null;
+  lines.forEach((entry, idx) => {
+    if (entry.type === 'speech' && entry.speaker === charId) {
+      if (!currentScene) {
+        // look back for context (up to 3 lines)
+        const contextLines = [];
+        for (let i = Math.max(0, idx - 3); i < idx; i++) {
+          contextLines.push(lines[i]);
+        }
+        currentScene = { jornada: entry.jornada, context: contextLines, myLines: [entry] };
+      } else {
+        currentScene.myLines.push(entry);
+      }
+    } else {
+      if (currentScene) {
+        grabScenes.push(currentScene);
+        currentScene = null;
+      }
+    }
+  });
+  if (currentScene) grabScenes.push(currentScene);
+
+  grabSceneIdx = 0;
+  renderGrabScene();
+  renderGrabLibrary();
+}
+
+function renderGrabScene() {
+  const numEl = document.getElementById('grab-scene-num');
+  const textEl = document.getElementById('grab-scene-text');
+
+  if (grabScenes.length === 0) {
+    numEl.textContent = '—';
+    textEl.innerHTML = '<p style="color:#888;font-style:italic;text-align:center;padding:2rem;">No hay escenas para esta selección</p>';
+    return;
+  }
+
+  numEl.textContent = `${grabSceneIdx + 1} / ${grabScenes.length}`;
+  const scene = grabScenes[grabSceneIdx];
+  const charId = document.getElementById('grab-char').value;
+  let html = `<div style="font-family:'Playfair Display',serif;font-style:italic;color:var(--red);font-size:0.9rem;margin-bottom:0.8rem;">${PLAY.jornadas[scene.jornada]} — Escena ${grabSceneIdx + 1}</div>`;
+
+  // Context lines
+  if (scene.context.length > 0) {
+    html += '<div style="opacity:0.6;margin-bottom:0.5rem;">';
+    scene.context.forEach(e => {
+      if (e.type === 'dir') {
+        html += `<div class="stage-dir" style="font-size:0.82rem;">${e.text}</div>`;
+      } else {
+        const p = getPersonaje(e.speaker);
+        html += `<div class="speech"><span class="speaker-name">${p.corto}:</span> <span style="padding-left:0.5rem;">${e.text}</span></div>`;
+      }
+    });
+    html += '</div>';
+  }
+
+  // My lines (highlighted)
+  scene.myLines.forEach(e => {
+    const p = getPersonaje(e.speaker);
+    html += `<div class="speech highlighted" style="border-left:4px solid var(--gold);background:#fff8e1;padding:0.5rem 0.8rem;border-radius:2px;margin:0.3rem 0;">
+      <span class="speaker-name">${p.corto}:</span>
+      <div class="speech-text" style="font-weight:600;font-size:1.05rem;line-height:1.7;">${e.text}</div>
+    </div>`;
+  });
+
+  textEl.innerHTML = html;
+}
+
+function prevGrabScene() {
+  if (grabScenes.length === 0) return;
+  grabSceneIdx = (grabSceneIdx - 1 + grabScenes.length) % grabScenes.length;
+  renderGrabScene();
+}
+function nextGrabScene() {
+  if (grabScenes.length === 0) return;
+  grabSceneIdx = (grabSceneIdx + 1) % grabScenes.length;
+  renderGrabScene();
+}
+
+// ── VU Meter ──
+function drawVU(analyser) {
+  const canvas = document.getElementById('grab-vu');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const bufferLength = analyser.frequencyBinCount;
+  const dataArray = new Uint8Array(bufferLength);
+
+  function draw() {
+    animFrameId = requestAnimationFrame(draw);
+    analyser.getByteFrequencyData(dataArray);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    const barWidth = (canvas.width / bufferLength) * 2.5;
+    let x = 0;
+    for (let i = 0; i < bufferLength; i++) {
+      const barHeight = (dataArray[i] / 255) * canvas.height;
+      const hue = (dataArray[i] / 255) * 60; // green to yellow/red
+      ctx.fillStyle = `hsl(${hue + 30}, 80%, 50%)`;
+      ctx.fillRect(x, canvas.height - barHeight, barWidth - 1, barHeight);
+      x += barWidth;
+    }
+  }
+  draw();
+}
+
+function stopVU() {
+  if (animFrameId) { cancelAnimationFrame(animFrameId); animFrameId = null; }
+  const canvas = document.getElementById('grab-vu');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+}
+
+// ── Recording ──
+async function startRecording() {
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const audioCtx = new AudioContext();
+    const source = audioCtx.createMediaStreamSource(stream);
+    analyserNode = audioCtx.createAnalyser();
+    analyserNode.fftSize = 64;
+    source.connect(analyserNode);
+    drawVU(analyserNode);
+
+    mediaRecorder = new MediaRecorder(stream);
+    audioChunks = [];
+    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
+    mediaRecorder.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      stopVU();
+      saveRecording();
+    };
+
+    mediaRecorder.start(100);
+    recSeconds = 0;
+    document.getElementById('grab-rec-time').textContent = '00:00';
+    recTimerInterval = setInterval(() => {
+      recSeconds++;
+      const m = String(Math.floor(recSeconds / 60)).padStart(2, '0');
+      const s = String(recSeconds % 60).padStart(2, '0');
+      document.getElementById('grab-rec-time').textContent = `${m}:${s}`;
+    }, 1000);
+
+    document.getElementById('btn-rec-start').disabled = true;
+    document.getElementById('btn-rec-start').classList.add('recording');
+    document.getElementById('btn-rec-stop').disabled = false;
+    document.getElementById('grab-status').textContent = '● Grabando...';
+  } catch(err) {
+    document.getElementById('grab-status').textContent = '⚠️ No se pudo acceder al micrófono: ' + err.message;
+  }
+}
+
+function stopRecording() {
+  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+    mediaRecorder.stop();
+    clearInterval(recTimerInterval);
+    document.getElementById('btn-rec-start').disabled = false;
+    document.getElementById('btn-rec-start').classList.remove('recording');
+    document.getElementById('btn-rec-stop').disabled = true;
+    document.getElementById('grab-status').textContent = 'Guardando grabación...';
+  }
+}
+
+function saveRecording() {
+  const blob = new Blob(audioChunks, { type: 'audio/webm' });
+  const url = URL.createObjectURL(blob);
+  const charId = document.getElementById('grab-char').value;
+  const p = charId ? getPersonaje(charId) : { corto: 'Sin personaje' };
+  const sceneLabel = grabScenes.length > 0 ? `Escena ${grabSceneIdx + 1}/${grabScenes.length}` : '';
+  const jornadaVal = document.getElementById('grab-jornada').value;
+  const jornadaLabel = jornadaVal === 'all' ? 'Todas las jornadas' : PLAY.jornadas[parseInt(jornadaVal)];
+
+  const rec = {
+    id: Date.now(),
+    charName: p.corto,
+    scene: sceneLabel,
+    jornada: jornadaLabel,
+    duration: recSeconds,
+    url: url,
+    date: new Date().toLocaleString('es-ES', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' })
+  };
+
+  recordings.unshift(rec);
+  // Keep max 20 recordings in memory (URLs are object URLs, not persisted)
+  if (recordings.length > 20) recordings = recordings.slice(0, 20);
+
+  renderGrabLibrary();
+  document.getElementById('grab-status').textContent = '✓ Grabación guardada · ' + formatTime(recSeconds);
+}
+
+function formatTime(s) {
+  return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+}
+
+function deleteRecording(id) {
+  recordings = recordings.filter(r => r.id !== id);
+  renderGrabLibrary();
+}
+
+function clearAllRecordings() {
+  if (recordings.length === 0) return;
+  if (confirm('¿Borrar todas las grabaciones?')) {
+    recordings = [];
+    renderGrabLibrary();
+  }
+}
+
+function renderGrabLibrary() {
+  const lib = document.getElementById('grab-library');
+  if (recordings.length === 0) {
+    lib.innerHTML = '<p style="color:#666;font-style:italic;font-size:0.85rem;text-align:center;padding:1rem;">No hay grabaciones todavía</p>';
+    return;
+  }
+  lib.innerHTML = recordings.map(r => `
+    <div class="grab-item">
+      <div class="grab-item-info">
+        <div class="grab-item-title">🎭 ${r.charName} · ${r.scene}</div>
+        <div class="grab-item-meta">📅 ${r.date} · ⏱ ${formatTime(r.duration)} · ${r.jornada}</div>
+      </div>
+      <audio controls src="${r.url}"></audio>
+      <button class="grab-del-btn" onclick="deleteRecording(${r.id})">🗑</button>
+    </div>
+  `).join('');
+}
+
+</script>
+</body>
+</html>
